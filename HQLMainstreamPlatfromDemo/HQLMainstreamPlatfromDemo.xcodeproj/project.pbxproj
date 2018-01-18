@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D6FD8A92009AB4200245C4D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8A82009AB4200245C4D /* AppDelegate.m */; };
+		0D6FD8AC2009AB4200245C4D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8AB2009AB4200245C4D /* ViewController.m */; };
+		0D6FD8AF2009AB4300245C4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6FD8AD2009AB4200245C4D /* Main.storyboard */; };
+		0D6FD8B12009AB4300245C4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D6FD8B02009AB4300245C4D /* Assets.xcassets */; };
+		0D6FD8B42009AB4300245C4D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6FD8B22009AB4300245C4D /* LaunchScreen.storyboard */; };
+		0D6FD8B72009AB4300245C4D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8B62009AB4300245C4D /* main.m */; };
+		0D6FD8F92009B39F00245C4D /* CPPlatformAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8DE2009B39F00245C4D /* CPPlatformAuthManager.m */; };
+		0D6FD8FA2009B39F00245C4D /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0D6FD8E12009B39F00245C4D /* LICENSE.txt */; };
+		0D6FD8FB2009B39F00245C4D /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 0D6FD8E22009B39F00245C4D /* README.markdown */; };
+		0D6FD8FC2009B39F00245C4D /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8E62009B39F00245C4D /* GCDAsyncSocket.m */; };
+		0D6FD8FD2009B39F00245C4D /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8E82009B39F00245C4D /* GCDAsyncUdpSocket.m */; };
+		0D6FD8FE2009B39F00245C4D /* HQLAuthWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8EA2009B39F00245C4D /* HQLAuthWebViewController.m */; };
+		0D6FD8FF2009B39F00245C4D /* HQLTwitchOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8EC2009B39F00245C4D /* HQLTwitchOAuth.m */; };
+		0D6FD9002009B39F00245C4D /* TwitchAppFetcherAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8EE2009B39F00245C4D /* TwitchAppFetcherAuthorization.m */; };
+		0D6FD9012009B39F00245C4D /* CPYoutubeBrocastRoomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F12009B39F00245C4D /* CPYoutubeBrocastRoomModel.m */; };
+		0D6FD9022009B39F00245C4D /* CPYouTubeOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F32009B39F00245C4D /* CPYouTubeOAuth.m */; };
+		0D6FD9032009B39F00245C4D /* GCYoutubeLiveStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F52009B39F00245C4D /* GCYoutubeLiveStream.m */; };
+		0D6FD9042009B39F00245C4D /* CPFacebookOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F82009B39F00245C4D /* CPFacebookOAuth.m */; };
+		7FFF60A75CF544EABAB6A110 /* libPods-HQLMainstreamPlatfromDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0909E4FDC3524EA402417394 /* libPods-HQLMainstreamPlatfromDemo.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0909E4FDC3524EA402417394 /* libPods-HQLMainstreamPlatfromDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HQLMainstreamPlatfromDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D6FD8A42009AB4200245C4D /* HQLMainstreamPlatfromDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HQLMainstreamPlatfromDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D6FD8A72009AB4200245C4D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0D6FD8A82009AB4200245C4D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0D6FD8AA2009AB4200245C4D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		0D6FD8AB2009AB4200245C4D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		0D6FD8AE2009AB4200245C4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0D6FD8B02009AB4300245C4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0D6FD8B32009AB4300245C4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0D6FD8B52009AB4300245C4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D6FD8B62009AB4300245C4D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0D6FD8DD2009B39F00245C4D /* CPPlatformAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPPlatformAuthManager.h; sourceTree = "<group>"; };
+		0D6FD8DE2009B39F00245C4D /* CPPlatformAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPPlatformAuthManager.m; sourceTree = "<group>"; };
+		0D6FD8E12009B39F00245C4D /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		0D6FD8E22009B39F00245C4D /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
+		0D6FD8E52009B39F00245C4D /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		0D6FD8E62009B39F00245C4D /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		0D6FD8E72009B39F00245C4D /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		0D6FD8E82009B39F00245C4D /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		0D6FD8E92009B39F00245C4D /* HQLAuthWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLAuthWebViewController.h; sourceTree = "<group>"; };
+		0D6FD8EA2009B39F00245C4D /* HQLAuthWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLAuthWebViewController.m; sourceTree = "<group>"; };
+		0D6FD8EB2009B39F00245C4D /* HQLTwitchOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLTwitchOAuth.h; sourceTree = "<group>"; };
+		0D6FD8EC2009B39F00245C4D /* HQLTwitchOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLTwitchOAuth.m; sourceTree = "<group>"; };
+		0D6FD8ED2009B39F00245C4D /* TwitchAppFetcherAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitchAppFetcherAuthorization.h; sourceTree = "<group>"; };
+		0D6FD8EE2009B39F00245C4D /* TwitchAppFetcherAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitchAppFetcherAuthorization.m; sourceTree = "<group>"; };
+		0D6FD8F02009B39F00245C4D /* CPYoutubeBrocastRoomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPYoutubeBrocastRoomModel.h; sourceTree = "<group>"; };
+		0D6FD8F12009B39F00245C4D /* CPYoutubeBrocastRoomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPYoutubeBrocastRoomModel.m; sourceTree = "<group>"; };
+		0D6FD8F22009B39F00245C4D /* CPYouTubeOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPYouTubeOAuth.h; sourceTree = "<group>"; };
+		0D6FD8F32009B39F00245C4D /* CPYouTubeOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPYouTubeOAuth.m; sourceTree = "<group>"; };
+		0D6FD8F42009B39F00245C4D /* GCYoutubeLiveStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCYoutubeLiveStream.h; sourceTree = "<group>"; };
+		0D6FD8F52009B39F00245C4D /* GCYoutubeLiveStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCYoutubeLiveStream.m; sourceTree = "<group>"; };
+		0D6FD8F72009B39F00245C4D /* CPFacebookOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFacebookOAuth.h; sourceTree = "<group>"; };
+		0D6FD8F82009B39F00245C4D /* CPFacebookOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFacebookOAuth.m; sourceTree = "<group>"; };
+		C3ECD442E436B90DD5E1A62C /* Pods-HQLMainstreamPlatfromDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HQLMainstreamPlatfromDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		D817A7FA6FD7F4987E1A59E5 /* Pods-HQLMainstreamPlatfromDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HQLMainstreamPlatfromDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0D6FD8A12009AB4200245C4D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FFF60A75CF544EABAB6A110 /* libPods-HQLMainstreamPlatfromDemo.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0781A576993351F6747330F0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C3ECD442E436B90DD5E1A62C /* Pods-HQLMainstreamPlatfromDemo.debug.xcconfig */,
+				D817A7FA6FD7F4987E1A59E5 /* Pods-HQLMainstreamPlatfromDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		0D6FD89B2009AB4200245C4D = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8A62009AB4200245C4D /* HQLMainstreamPlatfromDemo */,
+				0D6FD8A52009AB4200245C4D /* Products */,
+				0781A576993351F6747330F0 /* Pods */,
+				366C49628B2DEC05DAFC32BB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		0D6FD8A52009AB4200245C4D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8A42009AB4200245C4D /* HQLMainstreamPlatfromDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0D6FD8A62009AB4200245C4D /* HQLMainstreamPlatfromDemo */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8BD2009B37000245C4D /* MulitPlatform */,
+				0D6FD8A72009AB4200245C4D /* AppDelegate.h */,
+				0D6FD8A82009AB4200245C4D /* AppDelegate.m */,
+				0D6FD8AA2009AB4200245C4D /* ViewController.h */,
+				0D6FD8AB2009AB4200245C4D /* ViewController.m */,
+				0D6FD8AD2009AB4200245C4D /* Main.storyboard */,
+				0D6FD8B02009AB4300245C4D /* Assets.xcassets */,
+				0D6FD8B22009AB4300245C4D /* LaunchScreen.storyboard */,
+				0D6FD8B52009AB4300245C4D /* Info.plist */,
+				0D6FD8B62009AB4300245C4D /* main.m */,
+			);
+			path = HQLMainstreamPlatfromDemo;
+			sourceTree = "<group>";
+		};
+		0D6FD8BD2009B37000245C4D /* MulitPlatform */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8F62009B39F00245C4D /* Facebook */,
+				0D6FD8DC2009B39F00245C4D /* Tool */,
+				0D6FD8DF2009B39F00245C4D /* TwitchAuth */,
+				0D6FD8EF2009B39F00245C4D /* YouTube */,
+				0D6FD8BE2009B37000245C4D /* Twitter */,
+			);
+			path = MulitPlatform;
+			sourceTree = "<group>";
+		};
+		0D6FD8BE2009B37000245C4D /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Twitter;
+			sourceTree = "<group>";
+		};
+		0D6FD8DC2009B39F00245C4D /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8DD2009B39F00245C4D /* CPPlatformAuthManager.h */,
+				0D6FD8DE2009B39F00245C4D /* CPPlatformAuthManager.m */,
+			);
+			path = Tool;
+			sourceTree = "<group>";
+		};
+		0D6FD8DF2009B39F00245C4D /* TwitchAuth */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8E02009B39F00245C4D /* CocoaAsyncSocket */,
+				0D6FD8E92009B39F00245C4D /* HQLAuthWebViewController.h */,
+				0D6FD8EA2009B39F00245C4D /* HQLAuthWebViewController.m */,
+				0D6FD8EB2009B39F00245C4D /* HQLTwitchOAuth.h */,
+				0D6FD8EC2009B39F00245C4D /* HQLTwitchOAuth.m */,
+				0D6FD8ED2009B39F00245C4D /* TwitchAppFetcherAuthorization.h */,
+				0D6FD8EE2009B39F00245C4D /* TwitchAppFetcherAuthorization.m */,
+			);
+			path = TwitchAuth;
+			sourceTree = "<group>";
+		};
+		0D6FD8E02009B39F00245C4D /* CocoaAsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8E12009B39F00245C4D /* LICENSE.txt */,
+				0D6FD8E22009B39F00245C4D /* README.markdown */,
+				0D6FD8E32009B39F00245C4D /* Source */,
+			);
+			path = CocoaAsyncSocket;
+			sourceTree = "<group>";
+		};
+		0D6FD8E32009B39F00245C4D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8E42009B39F00245C4D /* GCD */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		0D6FD8E42009B39F00245C4D /* GCD */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8E52009B39F00245C4D /* GCDAsyncSocket.h */,
+				0D6FD8E62009B39F00245C4D /* GCDAsyncSocket.m */,
+				0D6FD8E72009B39F00245C4D /* GCDAsyncUdpSocket.h */,
+				0D6FD8E82009B39F00245C4D /* GCDAsyncUdpSocket.m */,
+			);
+			path = GCD;
+			sourceTree = "<group>";
+		};
+		0D6FD8EF2009B39F00245C4D /* YouTube */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8F02009B39F00245C4D /* CPYoutubeBrocastRoomModel.h */,
+				0D6FD8F12009B39F00245C4D /* CPYoutubeBrocastRoomModel.m */,
+				0D6FD8F22009B39F00245C4D /* CPYouTubeOAuth.h */,
+				0D6FD8F32009B39F00245C4D /* CPYouTubeOAuth.m */,
+				0D6FD8F42009B39F00245C4D /* GCYoutubeLiveStream.h */,
+				0D6FD8F52009B39F00245C4D /* GCYoutubeLiveStream.m */,
+			);
+			path = YouTube;
+			sourceTree = "<group>";
+		};
+		0D6FD8F62009B39F00245C4D /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				0D6FD8F72009B39F00245C4D /* CPFacebookOAuth.h */,
+				0D6FD8F82009B39F00245C4D /* CPFacebookOAuth.m */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
+		366C49628B2DEC05DAFC32BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0909E4FDC3524EA402417394 /* libPods-HQLMainstreamPlatfromDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0D6FD8A32009AB4200245C4D /* HQLMainstreamPlatfromDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0D6FD8BA2009AB4300245C4D /* Build configuration list for PBXNativeTarget "HQLMainstreamPlatfromDemo" */;
+			buildPhases = (
+				90A2C0BADAF43046444E8B6C /* [CP] Check Pods Manifest.lock */,
+				0D6FD8A02009AB4200245C4D /* Sources */,
+				0D6FD8A12009AB4200245C4D /* Frameworks */,
+				0D6FD8A22009AB4200245C4D /* Resources */,
+				F569E96BF4DB752CDD9BBF52 /* [CP] Embed Pods Frameworks */,
+				6B7F3A2309E8B2C5D6D1812D /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HQLMainstreamPlatfromDemo;
+			productName = HQLMainstreamPlatfromDemo;
+			productReference = 0D6FD8A42009AB4200245C4D /* HQLMainstreamPlatfromDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0D6FD89C2009AB4200245C4D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = topCreator;
+				TargetAttributes = {
+					0D6FD8A32009AB4200245C4D = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0D6FD89F2009AB4200245C4D /* Build configuration list for PBXProject "HQLMainstreamPlatfromDemo" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0D6FD89B2009AB4200245C4D;
+			productRefGroup = 0D6FD8A52009AB4200245C4D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0D6FD8A32009AB4200245C4D /* HQLMainstreamPlatfromDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0D6FD8A22009AB4200245C4D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D6FD8FA2009B39F00245C4D /* LICENSE.txt in Resources */,
+				0D6FD8FB2009B39F00245C4D /* README.markdown in Resources */,
+				0D6FD8B42009AB4300245C4D /* LaunchScreen.storyboard in Resources */,
+				0D6FD8B12009AB4300245C4D /* Assets.xcassets in Resources */,
+				0D6FD8AF2009AB4300245C4D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6B7F3A2309E8B2C5D6D1812D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90A2C0BADAF43046444E8B6C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HQLMainstreamPlatfromDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F569E96BF4DB752CDD9BBF52 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0D6FD8A02009AB4200245C4D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D6FD8FE2009B39F00245C4D /* HQLAuthWebViewController.m in Sources */,
+				0D6FD9022009B39F00245C4D /* CPYouTubeOAuth.m in Sources */,
+				0D6FD8AC2009AB4200245C4D /* ViewController.m in Sources */,
+				0D6FD9032009B39F00245C4D /* GCYoutubeLiveStream.m in Sources */,
+				0D6FD9042009B39F00245C4D /* CPFacebookOAuth.m in Sources */,
+				0D6FD9002009B39F00245C4D /* TwitchAppFetcherAuthorization.m in Sources */,
+				0D6FD8FC2009B39F00245C4D /* GCDAsyncSocket.m in Sources */,
+				0D6FD8B72009AB4300245C4D /* main.m in Sources */,
+				0D6FD8FF2009B39F00245C4D /* HQLTwitchOAuth.m in Sources */,
+				0D6FD8A92009AB4200245C4D /* AppDelegate.m in Sources */,
+				0D6FD8FD2009B39F00245C4D /* GCDAsyncUdpSocket.m in Sources */,
+				0D6FD9012009B39F00245C4D /* CPYoutubeBrocastRoomModel.m in Sources */,
+				0D6FD8F92009B39F00245C4D /* CPPlatformAuthManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0D6FD8AD2009AB4200245C4D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0D6FD8AE2009AB4200245C4D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0D6FD8B22009AB4300245C4D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0D6FD8B32009AB4300245C4D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0D6FD8B82009AB4300245C4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0D6FD8B92009AB4300245C4D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0D6FD8BB2009AB4300245C4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3ECD442E436B90DD5E1A62C /* Pods-HQLMainstreamPlatfromDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 98B5P59X79;
+				INFOPLIST_FILE = HQLMainstreamPlatfromDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.topCreator.HQLMainstreamPlatfromDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0D6FD8BC2009AB4300245C4D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D817A7FA6FD7F4987E1A59E5 /* Pods-HQLMainstreamPlatfromDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 98B5P59X79;
+				INFOPLIST_FILE = HQLMainstreamPlatfromDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.topCreator.HQLMainstreamPlatfromDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0D6FD89F2009AB4200245C4D /* Build configuration list for PBXProject "HQLMainstreamPlatfromDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D6FD8B82009AB4300245C4D /* Debug */,
+				0D6FD8B92009AB4300245C4D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0D6FD8BA2009AB4300245C4D /* Build configuration list for PBXNativeTarget "HQLMainstreamPlatfromDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D6FD8BB2009AB4300245C4D /* Debug */,
+				0D6FD8BC2009AB4300245C4D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0D6FD89C2009AB4200245C4D /* Project object */;
+}
