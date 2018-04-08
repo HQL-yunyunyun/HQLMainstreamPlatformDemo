@@ -9,7 +9,7 @@
 #import "HQLAuthWebViewController.h"
 #import <WebKit/WebKit.h>
 
-#define K_IPhoneX [[GCGlobalFunction hardwareString] hasPrefix:@"iPhone10"]
+#define K_IPhoneX (CGSizeEqualToSize(CGSizeMake(375.f, 812.f), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(812.f, 375.f), [UIScreen mainScreen].bounds.size))
 
 @interface HQLAuthWebViewController () <WKNavigationDelegate, WKUIDelegate>
 

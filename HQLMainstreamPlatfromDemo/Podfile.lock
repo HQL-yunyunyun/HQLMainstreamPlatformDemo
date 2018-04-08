@@ -20,54 +20,61 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AppAuth (0.9.1)
-  - Bolts (1.8.4):
-    - Bolts/AppLinks (= 1.8.4)
-    - Bolts/Tasks (= 1.8.4)
-  - Bolts/AppLinks (1.8.4):
+  - AppAuth (0.92.0)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.8.4)
-  - FBSDKCoreKit (4.28.0):
+  - Bolts/Tasks (1.9.0)
+  - FBSDKCoreKit (4.31.1):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.28.0):
+  - FBSDKLoginKit (4.31.1):
     - FBSDKCoreKit
-  - GoogleAPIClientForREST/Core (1.3.1):
+  - FBSDKShareKit (4.31.1):
+    - FBSDKCoreKit (~> 4.31.1)
+  - GoogleAPIClientForREST/Core (1.3.2):
     - GTMSessionFetcher (>= 1.1.7)
-  - GoogleAPIClientForREST/YouTube (1.3.1):
+  - GoogleAPIClientForREST/YouTube (1.3.2):
     - GoogleAPIClientForREST/Core
     - GTMSessionFetcher (>= 1.1.7)
-  - GTMAppAuth (0.6.1):
-    - AppAuth (~> 0.9.0)
+  - GTMAppAuth (0.7.0):
+    - AppAuth (~> 0.92.0)
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.1.12):
-    - GTMSessionFetcher/Full (= 1.1.12)
-  - GTMSessionFetcher/Core (1.1.12)
-  - GTMSessionFetcher/Full (1.1.12):
-    - GTMSessionFetcher/Core (= 1.1.12)
-  - TwitterCore (3.0.2)
-  - TwitterKit (3.2.1):
-    - TwitterCore (>= 3.0.2)
+  - GTMSessionFetcher (1.1.14):
+    - GTMSessionFetcher/Full (= 1.1.14)
+  - GTMSessionFetcher/Core (1.1.14)
+  - GTMSessionFetcher/Full (1.1.14):
+    - GTMSessionFetcher/Core (= 1.1.14)
+  - TwitterCore (3.1.0)
+  - TwitterKit (3.3.0):
+    - TwitterCore (>= 3.1.0)
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.3)
   - FBSDKCoreKit
   - FBSDKLoginKit
+  - FBSDKShareKit
   - GoogleAPIClientForREST/YouTube
   - GTMAppAuth
   - TwitterKit
+  - YYModel
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  AppAuth: f7d9a2ce4ffe79a62a8b0c1d0938e88d9809b846
-  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  FBSDKCoreKit: ca961e279113f691fd83dc634c0bbad9d4e3f370
-  FBSDKLoginKit: b077381c27d800f21661757e8140cf2c80a91e4a
-  GoogleAPIClientForREST: d18c6704317d6d5c56d70f724f8990eb125359a4
-  GTMAppAuth: ae710e1e53431e2bcdd57f9f92daa16a58a2947d
-  GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
-  TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
-  TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
+  AppAuth: 3f4f1d6d85ad631d0bbf15ffcdc10c447face97a
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
+  FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
+  FBSDKShareKit: e640c41c9fcd61929eeb3d0c21ad335103e7cb62
+  GoogleAPIClientForREST: 4fa84fc61fdeea48dd7088de5c1a864ace18125b
+  GTMAppAuth: 8d724be29ab8f2f6d35b2bf929d76340c9d1f1b1
+  GTMSessionFetcher: 390ea358e5a0d0133153806f744662dad933d06b
+  TwitterCore: 644d59e75abccb26cf0a9050d2c4dea0e5412241
+  TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: dfebe1d9018b08d383cae0fa3ced6953a0b67b20
+PODFILE CHECKSUM: b9c80f42dc08715d99f92ae41f88d5880f508e68
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.2.1

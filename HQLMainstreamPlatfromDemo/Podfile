@@ -12,7 +12,10 @@ target 'HQLMainstreamPlatfromDemo' do
 
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
   pod 'AFNetworking', '~> 2.6.3'
   pod 'TwitterKit'
 
+  pod 'YYModel'
+  
 end

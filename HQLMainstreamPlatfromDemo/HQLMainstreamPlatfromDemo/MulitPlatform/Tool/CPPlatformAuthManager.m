@@ -11,10 +11,11 @@
 #import "CPYouTubeOAuth.h"
 #import "HQLTwitchOAuth.h"
 #import "CPFacebookOAuth.h"
-#import "GCYoutubeLiveStream.h"
 
-#import "CustomUserDefault.h"
-#import "GCFileManager.h"
+#import "CPYoutubeBrocastRoomModel.h"
+
+//#import "CustomUserDefault.h"
+//#import "GCFileManager.h"
 
 /* Keychain item name for saving the user's authentication information.*/
 NSString *const kGTMAppAuthKeychainItemName = @"com.GoCreate.GoCreate:YouTube.AppAuth";
@@ -22,12 +23,12 @@ NSString *const kGTMAppAuthKeychainItemName = @"com.GoCreate.GoCreate:YouTube.Ap
 // twitch keychain
 NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.AppAuth";
 
-@interface CPPlatformAuthManager () <GCYoutubeLiveStreamDelegate, HQLTwitchOAuthDelegate, CPFacebookOAuthDelegate>
+@interface CPPlatformAuthManager () <HQLTwitchOAuthDelegate, CPFacebookOAuthDelegate>
 
 @property (strong, nonatomic) CPYouTubeOAuth *youtubeOAuth;
 @property (strong, nonatomic) HQLTwitchOAuth *twitchOAuth;
 @property (strong, nonatomic) CPFacebookOAuth *facebookOAuth;
-@property (strong, nonatomic) GCYoutubeLiveStream *youtubeLiveStream;
+@property (strong, nonatomic) CPTwitterOAuth *twitterOAuth;
 
 @property (assign, nonatomic) CPPlatformAuthType currentBroadcastPlatform;
 @property (assign, nonatomic) BOOL isBeginReceiveLiveMessages;
@@ -76,8 +77,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     [self setYoutubeAuth:[GTMAppAuthFetcherAuthorization authorizationFromKeychainForName:kGTMAppAuthKeychainItemName]];
     [self setTwitchAuth:[TwitchAppFetcherAuthorization authorizationFromKeychainForName:kTWITCHAppAuthKeychainItemName]];
     [self setFacebookAuth:[FBSDKAccessToken currentAccessToken]];
-    
-//    [self setFacebookIsLoginWithBroadcast:[[CustomUserDefault standardUserDefaults] boolForKey:FacebookIsLoginWithBroadcast]];
+    [self setTwitterAuth:[[TWTRTwitter sharedInstance].sessionStore session]];
 }
 
 - (void)preparePlatform {
@@ -90,7 +90,9 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     }
     if (!self.facebookOAuth) {
         self.facebookOAuth = [[CPFacebookOAuth alloc] initWithAuthorization:self.facebookAuthorization];
-//        self.facebookOAuth.delegate = self;
+    }
+    if (!self.twitterOAuth) {
+        self.twitterOAuth = [[CPTwitterOAuth alloc] initWithAuthorization:self.twitterAuthorization];
     }
 }
 
@@ -99,15 +101,17 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
 - (BOOL)platformIsAuthWithPlatformType:(CPPlatformAuthType)type {
     switch (type) {
         case CPPlatformAuthType_YouTube: {
-            return self.youtubeAuthorization;
+            return self.youtubeAuthorization ? YES : NO;
         }
         case CPPlatformAuthType_Twitch: {
-            return self.twitchAuthorization;
+            return self.twitchAuthorization ? YES : NO;
         }
         case CPPlatformAuthType_Facebook: {
-            return self.facebookAuthorization;
+            return self.facebookAuthorization ? YES : NO;
         }
-            
+        case CPPlatformAuthType_Twitter: {
+            return self.twitterAuthorization ? YES : NO;
+        }
         default: {
             return NO;
         }
@@ -116,8 +120,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
 
 #pragma mark - fetch auth
 
-- (void)doAppAuthPlatformType:(CPPlatformAuthType)type presentController:(UIViewController *)controller thenHandler:(void (^)(CPPlatformAuthManager *, NSError *))handler {
-    
+- (void)doAppAuthPlatformType:(CPPlatformAuthType)type presentController:(UIViewController *)controller otherParam:(NSDictionary *)otherParam thenHandler:(void (^)(CPPlatformAuthManager *, NSError *))handler {
     __weak typeof(self) _self = self;
     
     switch (type) {
@@ -136,15 +139,30 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
             break;
         }
         case CPPlatformAuthType_Facebook: {
-            [self.facebookOAuth doFacebookBroadcastAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-                [_self setFacebookAuth:authorization];
+            
+            NSArray *needPermissions = otherParam[@"permissions"];
+            if (needPermissions.count <= 0) {
+                needPermissions = [CPFacebookOAuth commonPermissions];
+            }
+            [self.facebookOAuth doFacebookAuthWithPresentController:controller permissionsArray:needPermissions thenHandler:^(FBSDKAccessToken *token, NSArray<NSString *> *grantedPermissions, NSArray<NSString *> *declinedPermissions, NSError *error) {
+                
+                if (declinedPermissions.count > 0) {
+                    if (!error) {
+                        error = [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"Facebook权限被拒绝"}];
+                    }
+                }
+                
+                [_self setFacebookAuth:token];
                 handler ? handler(_self, error) : nil;
             }];
-            /*
-            [self.facebookOAuth doFacebookCommonAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-                [_self setFacebookAuth:authorization];
+            break;
+        }
+            
+        case CPPlatformAuthType_Twitter: {
+            [self.twitterOAuth doTwitterAuthWithPresentController:controller thenHandler:^(TWTRSession *authorization, NSError *error) {
+                [_self setTwitterAuth:authorization];
                 handler ? handler(_self, error) : nil;
-            }];//*/
+            }];
             break;
         }
             
@@ -165,6 +183,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
                     [info setObject:userInfo[@"picture"] forKey:@"user_icon"];
                     [info setObject:userInfo[@"name"] forKey:@"user_name"];
                     
+                    /*
                     [[CustomUserDefault standardUserDefaults] setObject:userInfo[@"name"] forKey:YouTubeAccountNickName];
                     [[CustomUserDefault standardUserDefaults] setObject:userInfo[@"picture"] forKey:YouTubeAccountIconURL];
                     [[CustomUserDefault standardUserDefaults] setObject:userInfo[@"email"] forKey:GCYouTubeUserAccount];
@@ -172,7 +191,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
                     
                     //[[GCFileManager sharedGCFileManager] createUserDirectoryWithBid:jsonDictionaryOrArray[@"email"]]; // 创建目录
                     [[GCFileManager sharedGCFileManager] createYouTubeAccountDirectoryWithAccount:userInfo[@"email"]];
-                    
+                    //*/
                 }
                 handler ? handler(info, error) : nil;
             }];
@@ -184,11 +203,11 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
                 if (!error) {
                     [info setObject:userInfo[@"logo"] forKey:@"user_icon"];
                     [info setObject:userInfo[@"display_name"] forKey:@"user_name"];
-                    
+                    /*
                     [[CustomUserDefault standardUserDefaults] setObject:userInfo[@"display_name"] forKey:TwitchAccountNickName];
                     [[CustomUserDefault standardUserDefaults] setObject:userInfo[@"logo"] forKey:TwitchAccountIconURL];
                     [[CustomUserDefault standardUserDefaults] synchronize];
-                    
+                    //*/
                 }
                 handler ? handler(info, error) : nil;
             }];
@@ -200,14 +219,31 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
                 if (!error) {
                     [info setObject:profile.name forKey:@"user_name"];
                     [info setObject:[profile imageURLForPictureMode:FBSDKProfilePictureModeNormal size:CGSizeMake(100, 100)].absoluteString forKey:@"user_icon"];
+                    [info setObject:profile.userID forKey:@"user_id"];
                     [info setObject:_self.facebookAuthorization.tokenString forKey:@"user_token"];
-                    
+                    /*
                     [[CustomUserDefault standardUserDefaults] setObject:info[@"user_name"] forKey:FacebookAccountNickName];
                     [[CustomUserDefault standardUserDefaults] setObject:info[@"user_icon"] forKey:FacebookAccountIconURL];
                     [[CustomUserDefault standardUserDefaults] synchronize];
-                    
+                    //*/
                 }
                 handler ? handler(info, error) : nil;
+            }];
+            break;
+        }
+        case CPPlatformAuthType_Twitter: {
+            [self.twitterOAuth fetchUserInfoWithPresentController:controller completeHandler:^(TWTRUser *user, NSError *error) {
+                NSMutableDictionary *info = [NSMutableDictionary dictionary];
+                if (!error) {
+                    [info setObject:user.name forKey:@"user_name"];
+                    [info setObject:user.profileImageURL forKey:@"user_icon"];
+                    
+                    /*
+                     [[CustomUserDefault standardUserDefaults] setObject:info[@"user_name"] forKey:TwitterAccountNickName];
+                     [[CustomUserDefault standardUserDefaults] setObject:info[@"user_icon"] forKey:TwitterAccountIconURL];
+                     [[CustomUserDefault standardUserDefaults] synchronize];
+                     //*/
+                }
             }];
             break;
         }
@@ -233,16 +269,22 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     
     if (self.currentBroadcastPlatform != CPPlatformAuthType_UNKNOW) {
         if ([self.delegate respondsToSelector:@selector(broadcastError:)]) {
-            [self.delegate broadcastError:[NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-100 userInfo:@{@"message" : @"broadcast has been begin, can not start broadcast again", NSLocalizedDescriptionKey : @"broadcast has been begin, can not start broadcast again"}]];
+            [self.delegate broadcastError:[NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"broadcast has been begin, can not start broadcast again", NSLocalizedDescriptionKey : @"broadcast has been begin, can not start broadcast again"}]];
         }
         return;
     }
     
     if (type == CPPlatformAuthType_UNKNOW) {
         if ([self.delegate respondsToSelector:@selector(broadcastError:)]) {
-            [self.delegate broadcastError:[NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-100 userInfo:@{@"message" : @"platform auth type can not be unknow", NSLocalizedDescriptionKey : @"platform auth type can not be unknow"}]];
+            [self.delegate broadcastError:[NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"platform auth type can not be unknow", NSLocalizedDescriptionKey : @"platform auth type can not be unknow"}]];
         }
         return;
+    }
+    
+    if (type == CPPlatformAuthType_Twitter) {
+        if ([self.delegate respondsToSelector:@selector(broadcastError:)]) {
+            [self.delegate broadcastError:[NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"twitter live is not support in our class now", NSLocalizedDescriptionKey : @"twitter live is not support in our class now"}]];
+        }
     }
     
     NSString *description = param[@"description"];
@@ -279,8 +321,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
             CPYoutubeBrocastRoomModel *model = [[CPYoutubeBrocastRoomModel alloc] init];
             model.title = title;
             model.detail = description;
-            self.youtubeLiveStream.presentVC = controller;
-            [self.youtubeLiveStream startLiveBrocastWith:model CompleteHandle:^(NSString *broadcastURL, NSError *error) {
+            [self.youtubeOAuth startLiveBroadcastWithRoomModel:model presentController:controller completeHandler:^(NSString *broadcastURL, NSError *error) {
                 if (error) {
                     if ([_self.delegate respondsToSelector:@selector(broadcastError:)]) {
                         [_self.delegate broadcastError:error];
@@ -311,8 +352,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
             break;
         }
             
-        default:
-            break;
+        default: { break; }
     }
 }
 
@@ -327,7 +367,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
             break;
         }
         case CPPlatformAuthType_YouTube: {
-            [self.youtubeLiveStream stopLiveBroadcast];
+            [self.youtubeOAuth stopLiveBroadcast];
             break;
         }
         case CPPlatformAuthType_Twitch: {
@@ -395,7 +435,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
             break;
         }
         case CPPlatformAuthType_YouTube: {
-            [self.youtubeLiveStream fetchLiveMessageWithCompleteHandler:^(GTLRYouTube_LiveChatMessageListResponse *liveChats, NSError *error) {
+            [self.youtubeOAuth fetchLiveMessageWithCompleteHandler:^(GTLRYouTube_LiveChatMessageListResponse *liveChats, NSError *error) {
                 
                 if (error) {
                     if ([_self.delegate respondsToSelector:@selector(broadcastDidReceiveLiveMessagesError:platformType:)]) {
@@ -427,6 +467,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
                 }
                 
             }];
+
             break;
         }
         case CPPlatformAuthType_Twitch: {
@@ -521,8 +562,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
         }
         case CPPlatformAuthType_YouTube: {
             
-            self.youtubeLiveStream.presentVC = controller;
-            [self.youtubeLiveStream fetchLiveBroadcastStatusWithCompleteHandler:^(NSString *status) {
+            [self.youtubeOAuth fetchLiveBroadcastStatusWithCompleteHandler:^(NSString *status) {
                 
                 if ([_self.delegate respondsToSelector:@selector(broadcastStatusDidChange:platformType:)]) {
                     
@@ -730,12 +770,184 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     }
 }//*/
 
+#pragma mark - upload method
+
+/*
+ 上传param
+ title : NSString , (Facebook, YouTube, Twitter)
+ description : NSString , (Facebook, YouTube)
+ tags : string (空格隔开) , (YouTube)
+ privacy : NSString , (Facebook, YouTube) (Faebook 和 YouTube 的 pricacy 参数都是不一样的，得注意不能弄错)
+ thumbURL : NSString , (Facebook(只能是视频中的某一帧), YouTube)
+ resumeString : NSString , (Facebook, YouTube, Twitter) (YouTube 就是 uploadLocationURL, 而 Facebook 就是 session_id, Twitter 就是 media_id)
+ send_id : NSString , (Facebook) (就是指要发布的地方:timeline/page/group/event) (page_id / user_id / event_id / group_id)
+ videoURL : NSString  , (Facebook, YouTube, Twitter)
+ */
+- (id)createVideoUploadTicketWithParam:(NSDictionary *)param
+                              platformType:(CPPlatformAuthType)platformType
+                              videoURL:(NSString *)videoURL
+                              presentController:(UIViewController *)presentController
+                              progressHandler:(void (^)(id, double))progressHandler
+                              completeHandler:(void (^)(id, NSError *, NSDictionary *))completeHandler
+{
+    // 判断URL是否正确
+    if (videoURL.length <= 0) {
+        NSAssert(NO, @"video url can not be nil");
+        completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"video url can not be nil"}], nil) : nil;
+        return nil;
+    }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *fileError = nil;
+    NSInteger videoSize = [[fileManager attributesOfItemAtPath:videoURL error:&fileError][NSFileSize] integerValue] ;
+    if (videoSize <= 0 || fileError) {
+        NSAssert(NO, @"video size can not be nil");
+        completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"video size can not be nil"}], nil) : nil;
+        return nil;
+    }
+    
+    NSString *title = param[@"title"];
+    NSString *description = param[@"description"];
+    NSString *tags = param[@"tags"];
+    NSString *privacy = param[@"privacy"];
+    NSString *thumbURL = param[@"thumbURL"];
+    NSString *resumeString = param[@"resumeString"];
+    NSString *send_id = param[@"send_id"];
+    
+    switch (platformType) {
+        case CPPlatformAuthType_Facebook: {
+            
+            NSMutableDictionary *publishParam = [[NSMutableDictionary alloc] init];
+            if (title.length > 0) {
+                [publishParam setObject:title forKey:@"title"];
+            }
+            if (description.length > 0) {
+                [publishParam setObject:description forKey:@"description"];
+            }
+            if (thumbURL.length > 0) {
+                NSData *imageData = [NSData dataWithContentsOfFile:thumbURL];
+                if (imageData.length > 0) {
+                    [publishParam setObject:imageData forKey:@"thumb"];
+                }
+            }
+            if (privacy.length > 0) {
+                [publishParam setObject:privacy forKey:@"privacy"];
+            }
+            // 直接创建
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict setObject:videoURL forKey:@"videoURL"];
+            if (send_id.length > 0) {
+                [dict setObject:send_id forKey:@"sendID"];
+            }
+            if (resumeString.length > 0) {
+                [dict setObject:resumeString forKey:@"resumeMediaId"];
+            }
+            [dict setObject:publishParam forKey:@"publishParam"];
+            
+            CPFacebookUploader *uploader = [self.facebookOAuth createVideoUploadTicketWithParam:dict precentController:presentController uploadProgressHandler:^(CPUploader * _Nullable progressUploader, double uploadedPercent) {
+                progressHandler ? progressHandler(progressUploader, uploadedPercent) : nil;
+            } completeHandler:^(CPUploader * _Nullable callbackUploader, NSError * _Nullable error) {
+                
+                NSDictionary *dict = nil;
+                if (!error) {
+                    CPFacebookUploader *fbUploader = (CPFacebookUploader *)callbackUploader;
+                    if (fbUploader.videoLink.length > 0) {
+                        dict = @{@"videoLink" : fbUploader.videoLink};
+                    }
+                }
+                completeHandler ? completeHandler(callbackUploader, error, dict) : nil;
+                
+            }];
+            
+            [uploader resume];
+            
+            return uploader;
+            
+        }
+        case CPPlatformAuthType_YouTube: {
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            if (title.length > 0) {
+                [dict setObject:title forKey:@"title"];
+            }
+            if (description.length > 0) {
+                [dict setObject:description forKey:@"description"];
+            }
+            if (privacy.length > 0) {
+                [dict setObject:privacy forKey:@"privacyStatus"];
+            }
+            if (tags.length > 0) {
+                [dict setObject:tags forKey:@"tags"];
+            }
+            if (thumbURL.length > 0) {
+                [dict setObject:thumbURL forKey:@"thumbnailURL"];
+            }
+            if (resumeString.length > 0) {
+                [dict setObject:resumeString forKey:@"uploadLocationURL"];
+            }
+            
+            GTLRServiceTicket *ticket = [self.youtubeOAuth createYouTubeVideoUploadTicketWithParam:dict presentController:presentController videoUrl:[NSURL fileURLWithPath:videoURL] uploadProgressHandler:^(GTLRServiceTicket * _Nonnull progressTicket, unsigned long long totalBytesUploaded, unsigned long long totalBytesExpectedToUpload) {
+                
+                double progress = (double)totalBytesUploaded / (double)totalBytesExpectedToUpload;
+                progressHandler ? progressHandler(progressTicket, progress) : nil;
+                
+            } completeHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, GTLRYouTube_Video*  _Nullable object, NSError * _Nullable callbackError) {
+                
+                NSDictionary *dict = nil;
+                if (!callbackError) {
+                    dict = @{@"videoLink" : [NSString stringWithFormat:@"https://youtu.be/%@", object.identifier]};
+                }
+                completeHandler ? completeHandler(callbackTicket, callbackError, dict) : nil;
+                
+            }];
+            return ticket;
+        }
+        case CPPlatformAuthType_Twitter: {
+            
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            if (description.length > 0) {
+                [dict setObject:description forKey:@"tweetText"];
+            }
+            if (resumeString.length > 0) {
+                [dict setObject:resumeString forKey:@"resumeMediaId"];
+            }
+            [dict setObject:videoURL forKey:@"videoURL"];
+            
+            CPTwitterUploader *uploader = [self.twitterOAuth createTwitterVideoUploadTicketWithParamDict:dict precentController:presentController uploadProgressHandler:^(CPUploader * _Nullable progressUploader, double uploadedPercent) {
+                progressHandler ? progressHandler(progressUploader, uploadedPercent) : nil;
+            } completeHandler:^(CPUploader * _Nullable callbackUploader, NSError * _Nullable error) {
+                NSDictionary *dict = nil;
+                if (!error) {
+                    CPTwitterUploader *twitterUploader = (CPTwitterUploader *)callbackUploader;
+                    dict = @{@"videoLink" : twitterUploader.tweet.permalink};
+                }
+                completeHandler ? completeHandler(callbackUploader, error, dict) : nil;
+            }];
+            
+            [uploader resume];
+            
+            return uploader;
+            
+        }
+        case CPPlatformAuthType_Twitch: {
+            NSAssert(NO, @"It is not support twitch video upload now");
+            completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"It is not support twitch video upload now"}], nil) : nil;
+            return nil;
+        }
+            
+        default: {
+            NSAssert(NO, @"Unknow");
+            completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPPlatformAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"Unknow"}], nil) : nil;
+            return nil;
+        }
+    }
+}
+
 #pragma mark - notification
 
 - (void)removeNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:YouTubeAuthorizationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitchAuthorizationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FBSDKAccessTokenDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitterAuthorizationDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -748,6 +960,8 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(twitchAuthDidChange:) name:TwitchAuthorizationDidChangeNotification object:nil];
     // facebook
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(facebookAuthDidChange:) name:FBSDKAccessTokenDidChangeNotification object:nil];
+    // twitter
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(twitterAuthDidChange:) name:TwitterAuthorizationDidChangeNotification object:nil];
     
     // 进入后台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(becomeActivity) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -776,7 +990,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     [self stopAutoFetchLiveMessages];
     [self stopAutoFetchBroadcastStatus];
     
-    [self.youtubeLiveStream stopBroadcastConnection];
+    [self.youtubeOAuth stopBroadcastConnection];
     [self.facebookOAuth stopBroadcastConnection];
     [self.twitchOAuth stopBroadcastConnection];
 }
@@ -794,6 +1008,11 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
 - (void)facebookAuthDidChange:(NSNotification *)noti {
     FBSDKAccessToken *auth = noti.userInfo[FBSDKAccessTokenChangeNewKey];
     [self setFacebookAuth:auth];
+}
+
+- (void)twitterAuthDidChange:(NSNotification *)noti {
+    TWTRSession *auth = noti.userInfo[TwitterAuthorizationDidChangeNotificationAuthorizationKey];
+    [self setTwitterAuth:auth];
 }
 
 - (void)setYoutubeAuth:(GTMAppAuthFetcherAuthorization *)auth {
@@ -838,14 +1057,16 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     }
 }
 
-/*
-- (void)setFacebookIsLoginWithBroadcast:(BOOL)yesOrNo {
-    if (self.facebookInLoginWithBroadcast == yesOrNo) {
+- (void)setTwitterAuth:(TWTRSession *)auth {
+    if ([self.twitterAuthorization isEqual:auth] || (!auth && !self.twitterAuthorization)) {
         return;
     }
-    self.facebookInLoginWithBroadcast = yesOrNo;
-    [[CustomUserDefault standardUserDefaults] setObject:[NSNumber numberWithBool:yesOrNo] forKey:FacebookIsLoginWithBroadcast];
-}//*/
+    
+    self.twitterAuthorization = auth;
+    if (!auth) {
+        [self cleanTwitterAuth];
+    }
+}
 
 #pragma mark - clean app auth
 
@@ -854,10 +1075,12 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     
 //    [GTMAppAuthFetcherAuthorization removeAuthorizationFromKeychainForName:kGTMAppAuthKeychainItemName];
     
+    /*
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:YouTubeAccountIconURL];
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:YouTubeAccountNickName];
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:GCYouTubeUserAccount];
     [[CustomUserDefault standardUserDefaults] synchronize];
+    //*/
 }
 
 - (void)cleanTwitchAuth {
@@ -865,16 +1088,17 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     
 //    [TwitchAppFetcherAuthorization removeAuthorizationForKeychainForName:kTWITCHAppAuthKeychainItemName];
     
+    /*
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:TwitchAccountIconURL];
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:TwitchAccountNickName];
     [[CustomUserDefault standardUserDefaults] synchronize];
+    //*/
 }
 
 - (void)cleanFacebookAuth {
     [self.facebookOAuth cleanAppAuth];
     
-    //[self setFacebookIsLoginWithBroadcast:NO];
-    
+    /*
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:FacebookJoinedGroupKey];
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:FacebookStreamTargetKey];
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:FacebookStreamGroupKey];
@@ -882,6 +1106,17 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:FacebookAccountIconURL];
     [[CustomUserDefault standardUserDefaults] removeObjectForKey:FacebookAccountNickName];
     [[CustomUserDefault standardUserDefaults] synchronize];
+    //*/
+}
+
+- (void)cleanTwitterAuth {
+    [self.twitterOAuth clearAuth];
+    
+    /*
+     [[CustomUserDefault standardUserDefaults] removeObjectForKey:TwitterAccountIconURL];
+     [[CustomUserDefault standardUserDefaults] removeObjectForKey:TwitterAccountNickName];
+     [[CustomUserDefault standardUserDefaults] synchronize];
+     //*/
 }
 
 - (void)cleanAppAuthWithPlatformType:(CPPlatformAuthType)type {
@@ -898,6 +1133,10 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
             [self cleanYoutubeAuth];
             break;
         }
+        case CPPlatformAuthType_Twitter: {
+            [self cleanTwitterAuth];
+            break;
+        }
         default:
             break;
     }
@@ -907,16 +1146,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     [self cleanYoutubeAuth];
     [self cleanTwitchAuth];
     [self cleanFacebookAuth];
-}
-
-#pragma mark - getter
-
-- (GCYoutubeLiveStream *)youtubeLiveStream {
-    if (!_youtubeLiveStream) {
-        _youtubeLiveStream = [[GCYoutubeLiveStream alloc] init];
-        _youtubeLiveStream.delegate = self;
-    }
-    return _youtubeLiveStream;
+    [self cleanTwitterAuth];
 }
 
 @end

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D05736E205F536C00C178D5 /* CPTwitterUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D05736D205F536C00C178D5 /* CPTwitterUploader.m */; };
+		0D0573792060B80000C178D5 /* CPFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D0573782060B7FF00C178D5 /* CPFile.m */; };
+		0D64D3D8206907AF00A72514 /* CPFacebookUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D64D3D7206907AF00A72514 /* CPFacebookUploader.m */; };
+		0D64D3DB206914DE00A72514 /* CPFacebookUploadInfoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D64D3DA206914DE00A72514 /* CPFacebookUploadInfoRecord.m */; };
+		0D64D3E52069ED5800A72514 /* CPUploadParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D64D3E42069ED5800A72514 /* CPUploadParam.m */; };
+		0D64D3E82069F44400A72514 /* CPUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D64D3E72069F44400A72514 /* CPUploader.m */; };
 		0D6FD8A92009AB4200245C4D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8A82009AB4200245C4D /* AppDelegate.m */; };
 		0D6FD8AC2009AB4200245C4D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8AB2009AB4200245C4D /* ViewController.m */; };
 		0D6FD8AF2009AB4300245C4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6FD8AD2009AB4200245C4D /* Main.storyboard */; };
@@ -23,13 +29,28 @@
 		0D6FD9002009B39F00245C4D /* TwitchAppFetcherAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8EE2009B39F00245C4D /* TwitchAppFetcherAuthorization.m */; };
 		0D6FD9012009B39F00245C4D /* CPYoutubeBrocastRoomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F12009B39F00245C4D /* CPYoutubeBrocastRoomModel.m */; };
 		0D6FD9022009B39F00245C4D /* CPYouTubeOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F32009B39F00245C4D /* CPYouTubeOAuth.m */; };
-		0D6FD9032009B39F00245C4D /* GCYoutubeLiveStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F52009B39F00245C4D /* GCYoutubeLiveStream.m */; };
 		0D6FD9042009B39F00245C4D /* CPFacebookOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6FD8F82009B39F00245C4D /* CPFacebookOAuth.m */; };
+		0D97A08E2058C1CD00FB9AE0 /* CPTwitterOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D97A08D2058C1CD00FB9AE0 /* CPTwitterOAuth.m */; };
+		0D97A091205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D97A090205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.m */; };
+		0DD77E68206500EE0095BFEF /* upload_test_video.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = 0DD77E67206500EB0095BFEF /* upload_test_video.MP4 */; };
 		7FFF60A75CF544EABAB6A110 /* libPods-HQLMainstreamPlatfromDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0909E4FDC3524EA402417394 /* libPods-HQLMainstreamPlatfromDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0909E4FDC3524EA402417394 /* libPods-HQLMainstreamPlatfromDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HQLMainstreamPlatfromDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D05736C205F536C00C178D5 /* CPTwitterUploader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPTwitterUploader.h; sourceTree = "<group>"; };
+		0D05736D205F536C00C178D5 /* CPTwitterUploader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPTwitterUploader.m; sourceTree = "<group>"; };
+		0D0573762060B7FF00C178D5 /* CPFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPFile.h; sourceTree = "<group>"; };
+		0D0573772060B7FF00C178D5 /* CPFileDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPFileDelegate.h; sourceTree = "<group>"; };
+		0D0573782060B7FF00C178D5 /* CPFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPFile.m; sourceTree = "<group>"; };
+		0D64D3D6206907AF00A72514 /* CPFacebookUploader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPFacebookUploader.h; sourceTree = "<group>"; };
+		0D64D3D7206907AF00A72514 /* CPFacebookUploader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPFacebookUploader.m; sourceTree = "<group>"; };
+		0D64D3D9206914DE00A72514 /* CPFacebookUploadInfoRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPFacebookUploadInfoRecord.h; sourceTree = "<group>"; };
+		0D64D3DA206914DE00A72514 /* CPFacebookUploadInfoRecord.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPFacebookUploadInfoRecord.m; sourceTree = "<group>"; };
+		0D64D3E32069ED5800A72514 /* CPUploadParam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPUploadParam.h; sourceTree = "<group>"; };
+		0D64D3E42069ED5800A72514 /* CPUploadParam.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPUploadParam.m; sourceTree = "<group>"; };
+		0D64D3E62069F44400A72514 /* CPUploader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPUploader.h; sourceTree = "<group>"; };
+		0D64D3E72069F44400A72514 /* CPUploader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPUploader.m; sourceTree = "<group>"; };
 		0D6FD8A42009AB4200245C4D /* HQLMainstreamPlatfromDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HQLMainstreamPlatfromDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D6FD8A72009AB4200245C4D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0D6FD8A82009AB4200245C4D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -58,10 +79,14 @@
 		0D6FD8F12009B39F00245C4D /* CPYoutubeBrocastRoomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPYoutubeBrocastRoomModel.m; sourceTree = "<group>"; };
 		0D6FD8F22009B39F00245C4D /* CPYouTubeOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPYouTubeOAuth.h; sourceTree = "<group>"; };
 		0D6FD8F32009B39F00245C4D /* CPYouTubeOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPYouTubeOAuth.m; sourceTree = "<group>"; };
-		0D6FD8F42009B39F00245C4D /* GCYoutubeLiveStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCYoutubeLiveStream.h; sourceTree = "<group>"; };
-		0D6FD8F52009B39F00245C4D /* GCYoutubeLiveStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCYoutubeLiveStream.m; sourceTree = "<group>"; };
 		0D6FD8F72009B39F00245C4D /* CPFacebookOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPFacebookOAuth.h; sourceTree = "<group>"; };
 		0D6FD8F82009B39F00245C4D /* CPFacebookOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPFacebookOAuth.m; sourceTree = "<group>"; };
+		0D75D62A2015D115003746C0 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		0D97A08C2058C1CD00FB9AE0 /* CPTwitterOAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPTwitterOAuth.h; sourceTree = "<group>"; };
+		0D97A08D2058C1CD00FB9AE0 /* CPTwitterOAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPTwitterOAuth.m; sourceTree = "<group>"; };
+		0D97A08F205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPTwitterUploadInfoRecord.h; sourceTree = "<group>"; };
+		0D97A090205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPTwitterUploadInfoRecord.m; sourceTree = "<group>"; };
+		0DD77E67206500EB0095BFEF /* upload_test_video.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = upload_test_video.MP4; sourceTree = "<group>"; };
 		C3ECD442E436B90DD5E1A62C /* Pods-HQLMainstreamPlatfromDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HQLMainstreamPlatfromDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		D817A7FA6FD7F4987E1A59E5 /* Pods-HQLMainstreamPlatfromDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HQLMainstreamPlatfromDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HQLMainstreamPlatfromDemo/Pods-HQLMainstreamPlatfromDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +143,8 @@
 				0D6FD8B22009AB4300245C4D /* LaunchScreen.storyboard */,
 				0D6FD8B52009AB4300245C4D /* Info.plist */,
 				0D6FD8B62009AB4300245C4D /* main.m */,
+				0D75D62A2015D115003746C0 /* PrefixHeader.pch */,
+				0DD77E67206500EB0095BFEF /* upload_test_video.MP4 */,
 			);
 			path = HQLMainstreamPlatfromDemo;
 			sourceTree = "<group>";
@@ -137,6 +164,12 @@
 		0D6FD8BE2009B37000245C4D /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
+				0D97A08C2058C1CD00FB9AE0 /* CPTwitterOAuth.h */,
+				0D97A08D2058C1CD00FB9AE0 /* CPTwitterOAuth.m */,
+				0D05736C205F536C00C178D5 /* CPTwitterUploader.h */,
+				0D05736D205F536C00C178D5 /* CPTwitterUploader.m */,
+				0D97A08F205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.h */,
+				0D97A090205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.m */,
 			);
 			path = Twitter;
 			sourceTree = "<group>";
@@ -144,6 +177,13 @@
 		0D6FD8DC2009B39F00245C4D /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				0D0573762060B7FF00C178D5 /* CPFile.h */,
+				0D0573782060B7FF00C178D5 /* CPFile.m */,
+				0D0573772060B7FF00C178D5 /* CPFileDelegate.h */,
+				0D64D3E32069ED5800A72514 /* CPUploadParam.h */,
+				0D64D3E42069ED5800A72514 /* CPUploadParam.m */,
+				0D64D3E62069F44400A72514 /* CPUploader.h */,
+				0D64D3E72069F44400A72514 /* CPUploader.m */,
 				0D6FD8DD2009B39F00245C4D /* CPPlatformAuthManager.h */,
 				0D6FD8DE2009B39F00245C4D /* CPPlatformAuthManager.m */,
 			);
@@ -200,8 +240,6 @@
 				0D6FD8F12009B39F00245C4D /* CPYoutubeBrocastRoomModel.m */,
 				0D6FD8F22009B39F00245C4D /* CPYouTubeOAuth.h */,
 				0D6FD8F32009B39F00245C4D /* CPYouTubeOAuth.m */,
-				0D6FD8F42009B39F00245C4D /* GCYoutubeLiveStream.h */,
-				0D6FD8F52009B39F00245C4D /* GCYoutubeLiveStream.m */,
 			);
 			path = YouTube;
 			sourceTree = "<group>";
@@ -211,6 +249,10 @@
 			children = (
 				0D6FD8F72009B39F00245C4D /* CPFacebookOAuth.h */,
 				0D6FD8F82009B39F00245C4D /* CPFacebookOAuth.m */,
+				0D64D3D6206907AF00A72514 /* CPFacebookUploader.h */,
+				0D64D3D7206907AF00A72514 /* CPFacebookUploader.m */,
+				0D64D3D9206914DE00A72514 /* CPFacebookUploadInfoRecord.h */,
+				0D64D3DA206914DE00A72514 /* CPFacebookUploadInfoRecord.m */,
 			);
 			path = Facebook;
 			sourceTree = "<group>";
@@ -258,6 +300,11 @@
 					0D6FD8A32009AB4200245C4D = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -284,6 +331,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DD77E68206500EE0095BFEF /* upload_test_video.MP4 in Resources */,
 				0D6FD8FA2009B39F00245C4D /* LICENSE.txt in Resources */,
 				0D6FD8FB2009B39F00245C4D /* README.markdown in Resources */,
 				0D6FD8B42009AB4300245C4D /* LaunchScreen.storyboard in Resources */,
@@ -330,7 +378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F569E96BF4DB752CDD9BBF52 /* [CP] Embed Pods Frameworks */ = {
@@ -355,12 +403,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0573792060B80000C178D5 /* CPFile.m in Sources */,
+				0D64D3E52069ED5800A72514 /* CPUploadParam.m in Sources */,
+				0D64D3E82069F44400A72514 /* CPUploader.m in Sources */,
 				0D6FD8FE2009B39F00245C4D /* HQLAuthWebViewController.m in Sources */,
 				0D6FD9022009B39F00245C4D /* CPYouTubeOAuth.m in Sources */,
 				0D6FD8AC2009AB4200245C4D /* ViewController.m in Sources */,
-				0D6FD9032009B39F00245C4D /* GCYoutubeLiveStream.m in Sources */,
 				0D6FD9042009B39F00245C4D /* CPFacebookOAuth.m in Sources */,
+				0D05736E205F536C00C178D5 /* CPTwitterUploader.m in Sources */,
+				0D97A08E2058C1CD00FB9AE0 /* CPTwitterOAuth.m in Sources */,
+				0D64D3DB206914DE00A72514 /* CPFacebookUploadInfoRecord.m in Sources */,
 				0D6FD9002009B39F00245C4D /* TwitchAppFetcherAuthorization.m in Sources */,
+				0D64D3D8206907AF00A72514 /* CPFacebookUploader.m in Sources */,
+				0D97A091205A7C4F00FB9AE0 /* CPTwitterUploadInfoRecord.m in Sources */,
 				0D6FD8FC2009B39F00245C4D /* GCDAsyncSocket.m in Sources */,
 				0D6FD8B72009AB4300245C4D /* main.m in Sources */,
 				0D6FD8FF2009B39F00245C4D /* HQLTwitchOAuth.m in Sources */,
@@ -504,9 +559,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 98B5P59X79;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HQLMainstreamPlatfromDemo/PrefixHeader.pch;
 				INFOPLIST_FILE = HQLMainstreamPlatfromDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.topCreator.HQLMainstreamPlatfromDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.topCreator.HQLMainstreamPlatfromDemo12345;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -519,9 +577,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 98B5P59X79;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HQLMainstreamPlatfromDemo/PrefixHeader.pch;
 				INFOPLIST_FILE = HQLMainstreamPlatfromDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.topCreator.HQLMainstreamPlatfromDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.topCreator.HQLMainstreamPlatfromDemo12345;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

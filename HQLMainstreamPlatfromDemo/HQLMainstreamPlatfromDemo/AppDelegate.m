@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import <TwitterKit/TWTRTwitter.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 @interface AppDelegate ()
 
@@ -16,10 +18,29 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // 注册Twitter
+    [[TWTRTwitter sharedInstance] startWithConsumerKey:@"M6648udkvqZPK7SBPYCSXqeiA" consumerSecret:@"D43VbqtTNOze5vSublovCOIExVDeonU7arkGuJlDyn4fNqeQYr"];
+    
+    [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    BOOL yesOrNo = [[TWTRTwitter sharedInstance] application:app openURL:url options:options];
+    BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:app
+                                                                  openURL:url
+                                                        sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                               annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    return (yesOrNo || handled);
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+    return handled;
+
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

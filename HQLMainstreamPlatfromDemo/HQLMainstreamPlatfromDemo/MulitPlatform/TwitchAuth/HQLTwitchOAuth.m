@@ -150,7 +150,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
 - (void)refreshTokenWithCompleteHandler:(TwitchOAuthCompleteHandler)handler {
     
     if (!self.authorization.refreshToken || [self.authorization.refreshToken isEqualToString:@""]) {
-        handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{kMessage : @"could not have refresh token", NSLocalizedDescriptionKey : @"could not have refresh token"}]) : nil;
+        handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{kMessage : @"could not have refresh token", NSLocalizedDescriptionKey : @"could not have refresh token"}]) : nil;
         return;
     }
     
@@ -168,7 +168,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         if ([dict[kAccess_token] isEqualToString:@""] || !dict[kAccess_token]) {
             
-            handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{@"message" : dict[kMessage], NSLocalizedDescriptionKey : dict[kMessage]}]) : nil;
+            handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{@"message" : dict[kMessage], NSLocalizedDescriptionKey : dict[kMessage]}]) : nil;
             return;
         }
         
@@ -188,7 +188,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
 
 - (void)revokeAccessTokenWithToken:(NSString *)token completeHandler:(void (^)(NSError *))handler {
     if (token.length == 0) {
-        handler ? handler([NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{NSLocalizedDescriptionKey : @"token can not be nil", kMessage : @"token can not be nil"}]) : nil;
+        handler ? handler([NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"token can not be nil", kMessage : @"token can not be nil"}]) : nil;
         return;
     }
     __weak typeof(self) _self = self;
@@ -212,7 +212,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
             
             NSDictionary *dict = (NSDictionary *)responseObject;
             if (![dict[@"status"] isEqualToString:@"ok"]) {
-                error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{kMessage : @"revoke token failed", NSLocalizedDescriptionKey : @"revoke token failed"}];
+                error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{kMessage : @"revoke token failed", NSLocalizedDescriptionKey : @"revoke token failed"}];
             }
             
             handler ? handler(error) : nil;
@@ -313,7 +313,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
         
         /*
         if (ingests.count == 0) {
-            handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{kMessage : @"fetch broadcast ingest server failed", NSLocalizedDescriptionKey : @"fetch broadcast ingest server failed"}]) : nil;
+            handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{kMessage : @"fetch broadcast ingest server failed", NSLocalizedDescriptionKey : @"fetch broadcast ingest server failed"}]) : nil;
             return;
         }//*/
         
@@ -445,7 +445,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
             NSError *error = nil;
             
             if (![dict[@"status"] isEqualToString:status]) {
-                error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{kMessage : @"update channel status failed", NSLocalizedDescriptionKey : @"update channel status failed"}];
+                error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{kMessage : @"update channel status failed", NSLocalizedDescriptionKey : @"update channel status failed"}];
             }
             
             handler ? handler(error) : nil;
@@ -843,7 +843,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             if ([dict[kAccess_token] isEqualToString:@""] || !dict[kAccess_token]) {
                 
-                handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{@"message" : dict[kMessage], NSLocalizedDescriptionKey : dict[kMessage]}]) : nil;
+                handler ? handler(nil, [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{@"message" : dict[kMessage], NSLocalizedDescriptionKey : dict[kMessage]}]) : nil;
                 return;
             }
             
@@ -877,7 +877,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
         HQLAuthWebViewController *authWebController = [[HQLAuthWebViewController alloc] initWithURL:url callbackURL:twitchRedirectUri completeHandler:^(NSURL *callbackURL, NSError *error) {
             if (error) {
                 if (error.code == -1) {
-                    error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth twitch authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth twitch authorization request did cancel"}];
+                    error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fecth twitch authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth twitch authorization request did cancel"}];
                 }
                 handler ? handler(nil, error) : nil;
                 return;
@@ -902,7 +902,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
                 } else {
                     errorString = @"fetch oauth code failed";
                 }
-                NSError *callbackError = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-100 userInfo:@{@"message" : errorString, NSLocalizedDescriptionKey : errorString}];
+                NSError *callbackError = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{@"message" : errorString, NSLocalizedDescriptionKey : errorString}];
                 handler ? handler(nil, callbackError) : nil;
             }
             

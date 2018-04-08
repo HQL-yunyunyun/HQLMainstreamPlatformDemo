@@ -22,12 +22,12 @@
 @property (copy, nonatomic) NSString *last_comment_time;
 @property (copy, nonatomic) NSString *liveCommentsAfterKey;
 
-//@property (strong, nonatomic) NSTimer *timer;
-//@property (strong, nonatomic) NSTimer *statusTimer;
-
 @property (strong, nonatomic) FBSDKGraphRequestConnection *currentBroadcastStatusConnection;
 
 @property (strong, nonatomic) NSMutableArray *broadcastConnectionArray;
+
+//@property (strong, nonatomic) NSTimer *timer;
+//@property (strong, nonatomic) NSTimer *statusTimer;
 
 @end
 
@@ -46,226 +46,190 @@
     PLog(@"dealloc ---> %@", NSStringFromClass([self class]));
 }
 
-#pragma mark - method
-
-// 普通权限
-- (void)doFacebookCommonAuthWithPresentController:(UIViewController *)controller thenHandler:(void (^)(FBSDKAccessToken *, NSError *))handler {
+#pragma mark - auth medhot
+/**
+ 授权
+ */
+- (void)doFacebookAuthWithPresentController:(UIViewController *)controller
+           permissionsArray:(NSArray <NSString *>*)permissionsArray
+           thenHandler:(CPFacebookAuthCompletion)handler {
     
-    __weak typeof(self) _self = self;
-    
-    // 查找需要的权限
-    //@"user_managed_groups",
-    NSArray *needAuthArray = [self checkPermissionWithWantPermissions:[self commentPermissions]];
-    
-    if (needAuthArray.count > 0) {
-        [self.loginManager logInWithReadPermissions:needAuthArray fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            
-            if (error) {
-                handler ? handler(nil, error) : nil;
-                return;
-            }
-            
-            if (result.isCancelled) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
-                return;
-            }
-            
-            // 因为email权限是必须的，所以检查用户是否已经授权了
-            if ([_self checkPermissionWithWantPermissions:[_self commentPermissions]].count > 0) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"user did not auth" , NSLocalizedDescriptionKey : @"user did not auth"}]) : nil;
-                return;
-            }
-            
-            handler ? handler(result.token, nil) : nil;
-            
-        }];
-    } else {
-        handler ? handler([FBSDKAccessToken currentAccessToken], nil) : nil;
-    }
-}
-
-// 直播权限
-- (void)doFacebookBroadcastAuthWithPresentController:(UIViewController *)controller thenHandler:(void (^)(FBSDKAccessToken *, NSError *))handler {
-    // 查找权限
-    __weak typeof(self) _self = self;
-    
-    NSArray *needAuthArray = [self checkPermissionWithWantPermissions:[self broadcastPermissions]];
-    if (needAuthArray.count > 0) {
-        
-        [self.loginManager logInWithPublishPermissions:needAuthArray fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            
-            if (error) {
-                handler ? handler(nil, error) : nil;
-                return;
-            }
-            
-            if (result.isCancelled) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
-                return;
-            }
-            
-            // 判断授权
-            if ([_self checkPermissionWithWantPermissions:[_self broadcastPermissions]].count > 0) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"user did not auth" , NSLocalizedDescriptionKey : @"user did not auth"}]) : nil;
-                return;
-            }
-            
-            handler ? handler(result.token, nil) : nil;
-        }];
-        
-    } else {
-        handler ? handler([FBSDKAccessToken currentAccessToken], nil) : nil;
-    }
-//    else {
-//        //@"user_managed_groups",
-//        needAuthArray = [self checkPermissionWithWantPermissions:@[@"public_profile", @"email", @"user_friends" , @"pages_show_list"]];
-//        if (needAuthArray.count > 0) {
-//            [self doFacebookCommonAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-//                if (error) {
-//                    handler ? handler(nil, error) : nil;
-//                    return;
-//                }
-//
-//                handler ? handler(authorization, nil) : nil;
-//            }];
-//        } else {
-//            handler ? handler([FBSDKAccessToken currentAccessToken], nil) : nil;
-//        }
-//    }
-    
-    
-    //@"user_managed_groups",
-//    NSArray *needAuthArray = [self checkPermissionWithWantPermissions:@[@"public_profile", @"email", @"user_friends" , ]];
-//    if (needAuthArray.count > 0) {
-//        [self doFacebookCommonAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-//            if (error) {
-//                handler ? handler(nil, error) : nil;
-//                return;
-//            }
-//
-//            [_self doFacebookBroadcastAuthWithPresentController:controller thenHandler:handler];
-//        }];
-//    } else {
-//        //@"manage_pages", @"publish_pages",
-//        needAuthArray = [self checkPermissionWithWantPermissions:@[@"publish_actions", ]];
-//
-//        if (needAuthArray.count > 0) {
-//
-//            [self.loginManager logInWithPublishPermissions:needAuthArray fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-//
-//                if (error) {
-//                    handler ? handler(nil, error) : nil;
-//                    return;
-//                }
-//
-//                if (result.isCancelled) {
-//                    handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
-//                    return;
-//                }
-//
-//                handler ? handler(result.token, nil) : nil;
-//
-//            }];
-//
-//        } else {
-//            handler ? handler([FBSDKAccessToken currentAccessToken], nil) : nil;
-//        }
-//
-//    }
-}
-
-- (void)doFacebookGroupAuthWithPresentController:(UIViewController *)controller thenHandler:(void (^)(FBSDKAccessToken *, NSError *))handler {
-    __weak typeof(self) _self = self;
-    
-    NSArray *needAuthArray = [self checkPermissionWithWantPermissions:[self groupPermissions]];
-    if (needAuthArray.count > 0) {
-        
-        [self.loginManager logInWithReadPermissions:needAuthArray fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            if (error) {
-                handler ? handler(nil, error) : nil;
-                return;
-            }
-            
-            if (result.isCancelled) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
-                return;
-            }
-            
-            // 判断授权
-            if ([_self checkPermissionWithWantPermissions:[_self broadcastPermissions]].count > 0) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"user did not auth" , NSLocalizedDescriptionKey : @"user did not auth"}]) : nil;
-                return;
-            }
-            
-            handler ? handler(result.token, nil) : nil;
-            
-        }];
-        
-    } else {
-        handler ? handler([FBSDKAccessToken currentAccessToken], nil) : nil;
-    }
-}
-
-/*
-- (void)doFacebookAuthWithPresentController:(UIViewController *)controller thenHandler:(void (^)(FBSDKAccessToken *, NSError *))handler {
-    
-    FBSDKAccessToken *token = [FBSDKAccessToken currentAccessToken];
-    if (token) {
-        handler ? handler(token, nil) : nil;
+    if (permissionsArray.count <= 0) {
+        NSAssert(NO, @"permissions array can not be nil");
+        handler ? handler([FBSDKAccessToken currentAccessToken], nil, permissionsArray, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"permissions array can not be nil"}]) : nil;
         return;
     }
     
-    if (!controller) {
-        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"present controller can not be nil", NSLocalizedDescriptionKey : @"present controller can not be nil"}]) : nil;
+    // 先检测权限是否已经授权
+    NSArray *needAuthArray = [self checkPermissionWithWantPermissions:[[self class] groupPermissions]];
+    if (needAuthArray.count <= 0) { // 都已经授权了
+        handler ? handler([FBSDKAccessToken currentAccessToken], permissionsArray, nil, nil) : nil;
         return;
     }
     
-    __weak typeof(self) _self = self;
+    // 将授权分开成read 和 publish
+    NSArray *readArray = nil;
+    NSArray *publishArray = nil;
+    [self separatePermissionsArray:permissionsArray readSet:&readArray publishSet:&publishArray];
     
-    [self.loginManager logInWithPublishPermissions:@[@"publish_actions", @"manage_pages", @"publish_pages",] fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-       
-        if (error) {
-            handler ? handler(nil, error) : nil;
-            return;
-        }
-        
-        if (result.isCancelled) {
-            handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
-            return;
-        }
-        
-        // 检查所需要的权限用户是否有授权 --- 不需要这一步，就算没有授权也没关系
-        
-        // 申请权限
-        [_self.loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_friends", @"user_managed_groups",] fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-            
-            if (error) {
-                handler ? handler(nil, error) : nil;
-                return;
-            }
-            
-            if (result.isCancelled) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
-                return;
-            }
-            
-            handler ? handler(result.token, nil) : nil;
-            
+     __weak typeof(self) _self = self;
+    if (readArray) {
+        [self.loginManager logInWithReadPermissions:readArray fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            [_self authCallbackWithDeclinedPermission:publishArray originPermissionArray:permissionsArray result:result error:error thenHandler:handler];
         }];
-//        handler ? handler(result.token, nil) : nil;
-        
-    }];
+    } else {
+        [self.loginManager logInWithPublishPermissions:publishArray fromViewController:controller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            [_self authCallbackWithDeclinedPermission:readArray originPermissionArray:permissionsArray result:result error:error thenHandler:handler];
+        }];
+    }
 }
-//*/
+
+/**
+ 授权的callback
+ */
+- (void)authCallbackWithDeclinedPermission:(NSArray <NSString *>*)decliendPermission originPermissionArray:(NSArray <NSString *>*)originPermissionArray result:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error thenHandler:(CPFacebookAuthCompletion)handler {
+    
+    self.authorization = result.token;
+    
+    if (error) {
+        handler ? handler(result.token, nil, originPermissionArray, error) : nil;
+        return;
+    }
+    
+    if (result.isCancelled) {
+        handler ? handler(result.token, nil, originPermissionArray, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
+        return;
+    }
+    
+    NSMutableArray *array = [NSMutableArray arrayWithArray:decliendPermission];
+    if (result.declinedPermissions.count > 0) {
+        [array addObjectsFromArray:[result.declinedPermissions allObjects]];
+    }
+    handler ? handler(result.token, [result.grantedPermissions allObjects], array, nil) : nil;
+}
+
+/**
+ 将permissions 分成两类 --- read and publish
+ */
+- (void)separatePermissionsArray:(NSArray <NSString *>*)permissionsArray readSet:(NSArray <NSString *>**)readSet publishSet:(NSArray <NSString *>**)publishSet {
+    NSMutableArray *aReadSet = [[NSMutableArray alloc] init];
+    NSMutableArray *aPublishSet = [[NSMutableArray alloc] init];
+    
+    for (NSString *permission in permissionsArray) {
+        if ([[self class] isPublishPermission:permission]) { // publish permission
+            [aPublishSet addObject:permission];
+        } else {
+            [aReadSet addObject:permission];
+        }
+    }
+    
+    if (aReadSet.count > 0) {
+        *readSet = aReadSet;
+    } else {
+        *readSet = nil;
+    }
+    
+    if (aPublishSet.count > 0) {
+        *publishSet = aPublishSet;
+    } else {
+        *publishSet = nil;
+    }
+}
+
+/**
+ 是否是publish权限
+ */
++ (BOOL)isPublishPermission:(NSString *)permission
+{
+    return [permission hasPrefix:@"publish"] ||
+    [permission hasPrefix:@"manage"] ||
+    [permission isEqualToString:@"ads_management"] ||
+    [permission isEqualToString:@"create_event"] ||
+    [permission isEqualToString:@"rsvp_event"];
+}
+
+- (void)cleanAppAuth {
+    [self.loginManager logOut];
+    self.authorization = nil;
+    // 撤销权限
+    /*
+     [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/permissions"
+     parameters:nil
+     HTTPMethod:@"DELETE"]
+     startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+     PLog(@"delete auth : %@, error : %@", result, error);
+     }];//*/
+}
+
+#pragma mark -
+
++ (NSString *)getPublishPrivacyStringWith:(NSString *)pricacyString allowArray:(NSArray<NSString *> *)allowArray denyArray:(NSArray<NSString *> *)denyArray {
+    NSArray *privacyArray = @[FacebookPublishPrivacyKey_SELF,
+                                                 FacebookPublishPrivacyKey_CUSTOM,
+                                                 FacebookPublishPrivacyKey_EVERYONE,
+                                                 FacebookPublishPrivacyKey_ALL_FRIENDS,
+                                                 FacebookPublishPrivacyKey_FRIENDS_OF_FRIENDS];
+    if (![privacyArray containsObject:pricacyString]) {
+        return @"";
+    }
+    if ([pricacyString isEqualToString:FacebookPublishPrivacyKey_CUSTOM]) {
+        NSString *customString = @"allow";
+        NSString *arrayString = @"";
+        if (denyArray.count > 0) {
+            customString = @"deny";
+            arrayString = [self convertStringArrayToString:denyArray separateString:@","];
+        }
+        if (allowArray.count > 0) {
+            customString = @"allow";
+            arrayString = [self convertStringArrayToString:allowArray separateString:@","];
+        }
+        
+        return [NSString stringWithFormat:@"{'%@':'%@','%@':'%@'}",@"value", pricacyString, customString, arrayString];
+    }
+    
+    // 其他情况
+    return [NSString stringWithFormat:@"{'%@':'%@'}",@"value", pricacyString];
+}
+
++ (NSString *)convertStringArrayToString:(NSArray <NSString *>*)stringArray separateString:(NSString *)separateString {
+    if (!separateString) {
+        NSAssert(NO, @"%s error", __FUNCTION__);
+        return @"";
+    }
+    NSMutableString *string = [NSMutableString string];
+    for (NSString *aString in stringArray) {
+        if (![aString isKindOfClass:[NSString class]]) {
+            NSAssert(NO, @"%s error", __FUNCTION__);
+            return @"";
+        }
+        if (string.length > 0) {
+            [string appendString:separateString];
+        }
+        [string appendString:aString];
+    }
+    
+    return string.copy;
+}
+
+#pragma mark - fetch user info
+
+/**
+ 获取用户信息
+ */
 
 - (void)fetchUserInfoWithPresentController:(UIViewController *)controller completeHandler:(void (^)(FBSDKProfile *, NSError *))handler {
-    
     __weak typeof(self) _self = self;
     // userInfo 只要一个 profile就OK了
-    if ([self checkPermissionWithWantPermissions:@[@"public_profile"]].count > 0) {
-        [self doFacebookCommonAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-            if (error) {
-                handler ? handler(nil, error) : nil;
+    NSArray *needPermissions = @[@"public_profile"];
+    if ([self checkPermissionWithWantPermissions:needPermissions].count > 0) {
+        [self doFacebookAuthWithPresentController:controller permissionsArray:needPermissions thenHandler:^(FBSDKAccessToken *token, NSArray<NSString *> *grantedPermissions, NSArray<NSString *> *declinedPermissions, NSError *error) {
+            
+            // 只要有declinedPermissions 就表示有权限被拒绝 --- 那么接下来的操作就不能进行下去了
+            if (error || declinedPermissions.count > 0) {
+                if (!error) {
+                    error = [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"public_profile 被拒绝"}];
+                }
+                handler ? handler(nil,error) : nil;
                 return;
             }
             
@@ -275,6 +239,7 @@
         return;
     }
     
+    // 修改方式 不获取profile
     FBSDKProfile *profile = [FBSDKProfile currentProfile];
     
     if (profile) {
@@ -283,16 +248,52 @@
         [FBSDKProfile loadCurrentProfileWithCompletion:^(FBSDKProfile *profile, NSError *error) {
             
             if (!profile) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"fetch user info error", NSLocalizedDescriptionKey : @"fetch user info error"}]) : nil;
+                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fetch user info error", NSLocalizedDescriptionKey : @"fetch user info error"}]) : nil;
                 return;
             }
             handler ? handler(profile, nil) : nil;
             
         }];
-    }
+    }//*/
     
+    /* // 获取个人信息
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"/me" parameters:@{@"fields" : @"id,name"} HTTPMethod:k_GET];
+    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (error) {
+            handler ? handler(nil, error) : nil;
+            return;
+        }
+        
+        NSDictionary *dict = (NSDictionary *)result;
+        if (!dict || ![dict isKindOfClass:[NSDictionary class]]) {
+            handler ? handler(nil, [NSError errorWithDomain:CPFacebookErrorDomain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"fetch user info response is nil"}]) : nil;
+            return;
+        }
+        
+        NSString *user_id = dict[@"id"];
+        NSString *user_name = dict[@"name"];
+        // icon 的拼接 : https://graph.facebook.com/v2.11/154317088511429/picture?type=normal&width=100&height=100
+        NSString *user_icon = [NSString stringWithFormat:@"%@%@%@", @"https://graph.facebook.com/v2.11/", user_id, @"/picture?type=normal&width=100&height=100"];
+        
+        if (user_id.length <= 0 || !user_name) {
+            handler ? handler(nil, [NSError errorWithDomain:CPFacebookErrorDomain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"fetch user info user_id or user_name is nil"}]) : nil;
+            return;
+        }
+        
+        NSDictionary *user_dict = @{
+                                    @"user_id" : user_id,
+                                    @"user_name" : user_name,
+                                    @"user_icon" : user_icon,
+                                    };
+        handler ? handler(user_dict, error) : nil;
+    }];//*/
 }
 
+#pragma mark - fetch braodcast url
+
+/**
+ 获取直播的URL --- 发布到个人的时间线
+ */
 - (void)fetchFacebookBroadcastURLWithParam:(NSDictionary *)param presentController:(UIViewController *)controller completeHandler:(void (^)(NSString *, NSError *))handler {
     // 判断param
     FacebookBoradcastType type = [param[FacebookBroadcastType_string] integerValue];
@@ -300,28 +301,31 @@
     NSString *broadcast_description = param[FacebookBroadcast_description];
     
     if ([broadcast_id isEqualToString:@""] || !broadcast_id) {
-        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"broadcast id can not be nil", NSLocalizedDescriptionKey : @"broadcast id can not be nil"}]) : nil;
+        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"broadcast id can not be nil", NSLocalizedDescriptionKey : @"broadcast id can not be nil"}]) : nil;
         return;
     }
     
     __weak typeof(self) _self = self;
     if (![self isBroadcastAuthorization]) {
-        [self doFacebookBroadcastAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-            if (error) {
-                handler ? handler(nil, error) : nil;
+        [self doFacebookAuthWithPresentController:controller permissionsArray:[[self class] publishActionsPermissions] thenHandler:^(FBSDKAccessToken *token, NSArray<NSString *> *grantedPermissions, NSArray<NSString *> *declinedPermissions, NSError *error) {
+            if (error || declinedPermissions.count > 0) {
+                if (!error) {
+                    error = [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"publish 权限被拒绝"}];
+                }
+                handler ? handler(nil,error) : nil;
                 return;
             }
+            
             [_self fetchFacebookBroadcastURLWithParam:param presentController:controller completeHandler:handler];
         }];
-        return;
     }
     
     // 获取rtmp url
     NSDictionary *privacy = nil;
     if (type == FacebookBroadcastType_SELF) {
-        privacy = @{@"privacy" : @"{'value':'SELF'}"};
+        privacy = @{@"privacy" : [[self class] getPublishPrivacyStringWith:FacebookPublishPrivacyKey_SELF allowArray:nil denyArray:nil]};
     } else if (type == FacebookBroadcastType_PUBLISH) {
-        privacy = @{@"privacy" : @"{'value':'EVERYONE'}"};
+        privacy = @{@"privacy" : [[self class] getPublishPrivacyStringWith:FacebookPublishPrivacyKey_EVERYONE allowArray:nil denyArray:nil]};
     }
     NSString *url = [NSString stringWithFormat:@"/%@/%@", broadcast_id, @"live_videos"];
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:url parameters:privacy HTTPMethod:@"POST"];
@@ -356,10 +360,16 @@
     [self.broadcastConnectionArray addObject:con];
 }
 
+/**
+ 更新live 信息
+ */
 - (void)updateBroadcastDescription:(NSString *)string completeHandler:(void (^)(NSError *))handler {
     [self updateBroadcastDescription:string liveVideoID:self.currentLiveVideo_id completeHandler:handler];
 }
 
+/**
+ 获取直播状态
+ */
 -(void)fetchBroadcastStatusWithCompleteHandler:(void(^)(FacebookBroadcastStatus, NSError *))handler {
     [self.currentBroadcastStatusConnection cancel];
     
@@ -405,6 +415,9 @@ paging =     {
     };
 };*/
 
+/**
+ 获取直播时的评论
+ */
 - (void)fetchBroadcastCommentsWithCompleteHandler:(void (^)(NSArray *, NSError *))handler {
     
     if (!self.currentLiveVideo_id || [self.currentLiveVideo_id isEqualToString:@""]) {
@@ -479,6 +492,9 @@ paging =     {
     }];//*/
 }
 
+/**
+ 获取直播信息
+ */
 - (void)fetchBroadcastInfoWithCompleteHandler:(void (^)(NSDictionary *, NSError *))handler {
     [self getBroadcastInfoWithLiveVideoID:self.currentLiveVideo_id param:@{ @"fields": @"live_views,likes,status",} completeHandler:^(NSDictionary *dict, NSError *error) {
         
@@ -492,11 +508,14 @@ paging =     {
     }];
 }
 
-#pragma mark - search
+#pragma mark - search method
 
+/**
+ 搜索小组的结果 --- 下一页
+ */
 - (void)searchGroupResultNextPageWithPresentController:(UIViewController *)controller completeHandler:(void (^)(NSArray<NSDictionary *> *, NSError *))handler {
     if (!self.searchGroupAfterKey || [self.searchGroupAfterKey isEqualToString:@""]) {
-        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"after key can not be nil", NSLocalizedDescriptionKey : @"after key can not be nil"}]) : nil;
+        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"after key can not be nil", NSLocalizedDescriptionKey : @"after key can not be nil"}]) : nil;
         return;
     }
     
@@ -521,9 +540,12 @@ paging =     {
     }];
 }
 
+/**
+ 搜索小组的结果 --- 上一页
+ */
 - (void)searchGroupResultBeforePageWithPresentController:(UIViewController *)controller completeHandler:(void (^)(NSArray<NSDictionary *> *, NSError *))handler {
     if (!self.searchGroupBeforeKey || [self.searchGroupBeforeKey isEqualToString:@""]) {
-        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"before key can not be nil", NSLocalizedDescriptionKey : @"before key can not be nil"}]) : nil;
+        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"before key can not be nil", NSLocalizedDescriptionKey : @"before key can not be nil"}]) : nil;
         return;
     }
     
@@ -547,7 +569,9 @@ paging =     {
         
     }];
 }
-
+/**
+ 搜索小组
+ */
 - (void)searchGroupWithKeyWord:(NSString *)keyWord presentController:(UIViewController *)controller completeHandler:(void(^)(NSArray<NSDictionary *> *, NSError *))handler {
     NSDictionary *param = @{@"fields" : @"cover,icon,name,id"};
     
@@ -574,6 +598,9 @@ paging =     {
     }];
 }
 
+/**
+ 搜索
+ */
 - (void)searchKeyWordWithType:(FacebookSearchType)type keyWord:(NSString *)keyWord param:(NSDictionary *)param presentController:(UIViewController *)controller completeHandler:(void(^)(NSDictionary *, NSError *))handler {
     
     if (!keyWord || [keyWord isEqualToString:@""]) {
@@ -581,10 +608,14 @@ paging =     {
     }
     
     __weak typeof(self) _self = self;
-    if (![self isCommentAuthorization] && ![self isBroadcastAuthorization]) {
-        [self doFacebookCommonAuthWithPresentController:controller thenHandler:^(FBSDKAccessToken *authorization, NSError *error) {
-            if (error) {
-                handler ? handler(nil, error) : nil;
+    NSArray *needPermissions = @[@"public_profile"]; // 搜索Api只要 public_profile 这个权限就够了
+    if ([self checkPermissionWithWantPermissions:needPermissions].count > 0) {
+        [self doFacebookAuthWithPresentController:controller permissionsArray:needPermissions thenHandler:^(FBSDKAccessToken *token, NSArray<NSString *> *grantedPermissions, NSArray<NSString *> *declinedPermissions, NSError *error) {
+            if (error || declinedPermissions.count > 0) {
+                if (!error) {
+                    error = [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"public_profile 权限被拒绝"}];
+                }
+                handler ? handler(nil,error) : nil;
                 return;
             }
             
@@ -639,6 +670,9 @@ paging =     {
 
 #pragma mark -
 
+/**
+ 检查用户是否有小组的直播权限
+ */
 - (void)checkGroupPermissionsWithGroupID:(NSString *)group_id presentController:(UIViewController *)controller completeHandler:(void (^)(BOOL))handler {
     
     if ([group_id isEqualToString:@""] || !group_id) {
@@ -662,6 +696,9 @@ paging =     {
 
 #pragma mark - broadcast
 
+/**
+ 开始直播
+ */
 - (void)startBroadcastWithParam:(NSDictionary *)param presentController:(UIViewController *)controller completeHandler:(void (^)(NSString *, NSError *))handler {
     
     //__weak typeof(self) _self = self;
@@ -676,6 +713,9 @@ paging =     {
     }];
 }
 
+/**
+ 停止直播
+ */
 - (void)stopBroadcast {
     
     [self postBoradcastInfoWithLiveVideoID:self.currentLiveVideo_id param:@{ @"end_live_video": @"true",} commpleteHandler:^(NSError *error) {
@@ -741,13 +781,67 @@ paging =     {
     self.currentLiveVideo_id = liveVideoID;
 }
 
+#pragma mark - upload method
+
+/*
+ param:
+ videoURL : NSString
+ publishParam : NSDictionary
+ sendID : NSString
+ resumeMediaId : NSString
+ */
+- (CPFacebookUploader *)createVideoUploadTicketWithParam:(NSDictionary *)param
+                                          precentController:(UIViewController *)precentController
+                                          uploadProgressHandler:(CPUploaderProgressHandler)uploadProgressHandler
+                                          completeHandler:(CPUploaderCompleteHandler)completeHandler
+{
+    
+    if (!param) {
+        NSAssert(NO, @"param can not be nil");
+        completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPFacebookErrorDomain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"paramDict can not be nil"}]) : nil;
+        return nil;
+    }
+    
+    NSString *url = param[@"videoURL"];
+    if (url.length <= 0) {
+        NSAssert(NO, @"video url can not be nil");
+        completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPFacebookErrorDomain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"video url can not be nil"}]) : nil;
+        return nil;
+    }
+    
+    // 检测send_id
+    NSString *send_id = param[@"sendID"];
+    if (send_id.length <= 0) {
+        NSAssert(NO, @"send id can not be nil");
+        completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPFacebookErrorDomain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"send id can not be nil"}]) : nil;
+        return nil;
+    }
+    
+    // 判断是否有权限上传
+    if (![self isBroadcastAuthorization]) {
+        [self doFacebookAuthWithPresentController:precentController permissionsArray:[[self class] publishActionsPermissions] thenHandler:nil];
+        return nil;
+    }
+    
+    CPUploadParam *uploadParam = [[CPUploadParam alloc] init];
+    uploadParam.videoURL =url;
+    uploadParam.userID = self.authorization.userID;
+    uploadParam.resumeMediaId = param[@"resumeMediaId"];
+    uploadParam.publishParam = param[@"publishParam"];
+    uploadParam.sendID = send_id;
+    
+    CPFacebookUploader *uploader = [CPFacebookUploader createFacebookUploadTicketWithParam:uploadParam uploadProgressHandler:uploadProgressHandler completeHandler:completeHandler];
+    
+    return uploader;
+}
+
 #pragma mark -
 
 /*
 - (void)autoFetchBroadcastStatus {
     if (!self.currentLiveVideo_id || [self.currentLiveVideo_id isEqualToString:@""]) {
 //        if ([self.delegate respondsToSelector:@selector(facebookDidReceiveLiveCommentsError:)]) {
-//            [self.delegate facebookDidReceiveLiveCommentsError:[NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"current live video id is nil", NSLocalizedDescriptionKey : @"current live video id is nil"}]];
+//            [self.delegate facebookDidReceiveLiveCommentsError:[NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"current live video id is nil", NSLocalizedDescriptionKey : @"current live video id is nil"}]];
 //        }
         return;
     }
@@ -776,7 +870,7 @@ paging =     {
 - (void)autoFetchBroadcastComments {
     if (!self.currentLiveVideo_id || [self.currentLiveVideo_id isEqualToString:@""]) {
         if ([self.delegate respondsToSelector:@selector(facebookDidReceiveLiveCommentsError:)]) {
-            [self.delegate facebookDidReceiveLiveCommentsError:[NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"current live video id is nil", NSLocalizedDescriptionKey : @"current live video id is nil"}]];
+            [self.delegate facebookDidReceiveLiveCommentsError:[NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"current live video id is nil", NSLocalizedDescriptionKey : @"current live video id is nil"}]];
         }
         return;
     }
@@ -820,7 +914,7 @@ paging =     {
     }];
 } //*/
 
-#pragma mark  tool
+#pragma mark - tool
 
 - (void)updateBroadcastDescription:(NSString *)string liveVideoID:(NSString *)liveVideoID completeHandler:(void(^)(NSError *error))handler {
     [self postBoradcastInfoWithLiveVideoID:liveVideoID param:@{@"description" : string} commpleteHandler:handler];
@@ -828,7 +922,7 @@ paging =     {
 
 - (void)postBoradcastInfoWithLiveVideoID:(NSString *)liveVideoID param:(NSDictionary *)param commpleteHandler:(void(^)(NSError *error))handler {
     if (!liveVideoID || [liveVideoID isEqualToString:@""]) {
-        handler ? handler([NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"live video id can not be nil", NSLocalizedDescriptionKey : @"live video id can not be nil"}]) : nil;
+        handler ? handler([NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"live video id can not be nil", NSLocalizedDescriptionKey : @"live video id can not be nil"}]) : nil;
         return;
     }
     
@@ -856,7 +950,7 @@ paging =     {
 
 - (FBSDKGraphRequestConnection *)getBroadcastInfoWithLiveVideoID:(NSString *)liveVideoID param:(NSDictionary *)param completeHandler:(void(^)(NSDictionary *dict, NSError *error))handler {
     if (!liveVideoID || [liveVideoID isEqualToString:@""]) {
-        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-100 userInfo:@{@"message" : @"live video id can not be nil", NSLocalizedDescriptionKey : @"live video id can not be nil"}]) : nil;
+        handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"live video id can not be nil", NSLocalizedDescriptionKey : @"live video id can not be nil"}]) : nil;
         return nil;
     }
     __weak typeof(self) _self = self;
@@ -882,24 +976,7 @@ paging =     {
     return con;
 }
 
-- (void)cleanAppAuth {
-    [self.loginManager logOut];
-    
-    // 撤销权限
-    /*
-    [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me/permissions"
-                                       parameters:nil
-                                       HTTPMethod:@"DELETE"]
-    startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        PLog(@"delete auth : %@, error : %@", result, error);
-    }];//*/
-}
-
 #pragma mark - permissions
-
-//- (BOOL)isAuthorization {
-//return ([FBSDKAccessToken currentAccessToken] != nil);
-//}
 
 - (NSArray <NSString *>*)checkPermissionWithWantPermissions:(NSArray <NSString *>*)wantPermissions {
     FBSDKAccessToken *token = [FBSDKAccessToken currentAccessToken];
@@ -913,37 +990,47 @@ paging =     {
 }
 
 // 判断普通权限
-- (BOOL)isCommentAuthorization {
-    return ([self checkPermissionWithWantPermissions:[self commentPermissions]].count > 0 ? NO : YES);
+- (BOOL)isCommonAuthorization {
+    return ([self checkPermissionWithWantPermissions:[[self class] commonPermissions]].count > 0 ? NO : YES);
 }
 
 // 判断直播权限
 - (BOOL)isBroadcastAuthorization {
-    return ([self checkPermissionWithWantPermissions:[self broadcastPermissions]].count > 0 ? NO : YES);
+    return ([self checkPermissionWithWantPermissions:[[self class] publishActionsPermissions]].count > 0 ? NO : YES);
 }
 
 // 判断小组权限
 - (BOOL)isGroupAuthorization {
-    return ([self checkPermissionWithWantPermissions:[self groupPermissions]].count > 0 ? NO : YES);
+    return ([self checkPermissionWithWantPermissions:[[self class] groupPermissions]].count > 0 ? NO : YES);
 }
 
-- (NSArray <NSString *>*)commentPermissions {
+/**
+ 通用的登录permission(public_profile, eamil)
+
+ @return 权限
+ */
++ (NSArray <NSString *>*)commonPermissions {
     //, @"pages_show_list"
     return @[@"public_profile", @"email" ];
 }
 
-- (NSArray <NSString *>*)broadcastPermissions {
+/**
+ publish_actions permission 适用于 Broadcast 和 发布Facebook(视频、图片等)
+
+ @return 权限
+ */
++ (NSArray <NSString *>*)publishActionsPermissions {
     return @[@"publish_actions",];
 }
 
-- (NSArray <NSString *>*)groupPermissions {
+/**
+ 小组管理的permission(user_managed_groups)
+
+ @return 权限
+ */
++ (NSArray <NSString *>*)groupPermissions {
     return @[@"user_managed_groups"];
 }
-
-//- (NSArray <NSString *>*)permissions {
-//    return @[@"public_profile", @"email", @"user_friends", @"publish_actions", @"manage_pages", @"user_managed_groups", @"publish_pages"];
-//    return @[@"public_profile", @"email", @"user_friends",];
-//}
 
 #pragma mark - getter
 

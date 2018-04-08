@@ -283,6 +283,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_CaptionSnippet_TrackKind_Standard;
 // ----------------------------------------------------------------------------
 // GTLRYouTube_CdnSettings.frameRate
 
+/** Value: "variable" */
+GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_FrameRate_Variable;
 /** Value: "30fps" */
 GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_FrameRate_X30fps;
 /** Value: "60fps" */
@@ -299,6 +301,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_IngestionType_Rtmp;
 // ----------------------------------------------------------------------------
 // GTLRYouTube_CdnSettings.resolution
 
+/** Value: "variable" */
+GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_Resolution_Variable;
 /** Value: "1080p" */
 GTLR_EXTERN NSString * const kGTLRYouTube_CdnSettings_Resolution_X1080p;
 /** Value: "1440p" */
@@ -1481,6 +1485,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_OflcRating_OflcR18;
 GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_OflcRating_OflcRp13;
 /** Value: "oflcRp16" */
 GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_OflcRating_OflcRp16;
+/** Value: "oflcRp18" */
+GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_OflcRating_OflcRp18;
 /** Value: "oflcUnrated" */
 GTLR_EXTERN NSString * const kGTLRYouTube_ContentRating_OflcRating_OflcUnrated;
 
@@ -1883,6 +1889,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_LiveStreamConfigurationIssue_Type_Vide
 GTLR_EXTERN NSString * const kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoCodec;
 /** Value: "videoCodecMismatch" */
 GTLR_EXTERN NSString * const kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoCodecMismatch;
+/** Value: "videoIngestionFasterThanRealtime" */
+GTLR_EXTERN NSString * const kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoIngestionFasterThanRealtime;
 /** Value: "videoIngestionStarved" */
 GTLR_EXTERN NSString * const kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoIngestionStarved;
 /** Value: "videoInterlaceMismatch" */
@@ -2951,6 +2959,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *  The frame rate of the inbound video data.
  *
  *  Likely values:
+ *    @arg @c kGTLRYouTube_CdnSettings_FrameRate_Variable Value "variable"
  *    @arg @c kGTLRYouTube_CdnSettings_FrameRate_X30fps Value "30fps"
  *    @arg @c kGTLRYouTube_CdnSettings_FrameRate_X60fps Value "60fps"
  */
@@ -2975,6 +2984,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *  The resolution of the inbound video data.
  *
  *  Likely values:
+ *    @arg @c kGTLRYouTube_CdnSettings_Resolution_Variable Value "variable"
  *    @arg @c kGTLRYouTube_CdnSettings_Resolution_X1080p Value "1080p"
  *    @arg @c kGTLRYouTube_CdnSettings_Resolution_X1440p Value "1440p"
  *    @arg @c kGTLRYouTube_CdnSettings_Resolution_X2160p Value "2160p"
@@ -5069,6 +5079,7 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *    @arg @c kGTLRYouTube_ContentRating_OflcRating_OflcR18 Value "oflcR18"
  *    @arg @c kGTLRYouTube_ContentRating_OflcRating_OflcRp13 Value "oflcRp13"
  *    @arg @c kGTLRYouTube_ContentRating_OflcRating_OflcRp16 Value "oflcRp16"
+ *    @arg @c kGTLRYouTube_ContentRating_OflcRating_OflcRp18 Value "oflcRp18"
  *    @arg @c kGTLRYouTube_ContentRating_OflcRating_OflcUnrated Value
  *        "oflcUnrated"
  */
@@ -5982,6 +5993,13 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *        Value "closedCaptionsHttpPost"
  */
 @property(nonatomic, copy, nullable) NSString *closedCaptionsType;
+
+/**
+ *  This setting indicates whether auto start is enabled for this broadcast.
+ *
+ *  Uses NSNumber of boolValue.
+ */
+@property(nonatomic, strong, nullable) NSNumber *enableAutoStart;
 
 /**
  *  This setting indicates whether HTTP POST closed captioning is enabled for
@@ -7097,6 +7115,8 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *        "videoCodec"
  *    @arg @c kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoCodecMismatch
  *        Value "videoCodecMismatch"
+ *    @arg @c kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoIngestionFasterThanRealtime
+ *        Value "videoIngestionFasterThanRealtime"
  *    @arg @c kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoIngestionStarved
  *        Value "videoIngestionStarved"
  *    @arg @c kGTLRYouTube_LiveStreamConfigurationIssue_Type_VideoInterlaceMismatch
@@ -8631,6 +8651,9 @@ GTLR_EXTERN NSString * const kGTLRYouTube_VideoSuggestions_ProcessingWarnings_Un
  *  A video resource represents a YouTube video.
  */
 @interface GTLRYouTube_Video : GTLRObject
+
+/** The access token to uniquely identify a revocable unlisted video. */
+@property(nonatomic, copy, nullable) NSString *accessToken;
 
 /**
  *  Age restriction details related to a video. This data can only be retrieved
