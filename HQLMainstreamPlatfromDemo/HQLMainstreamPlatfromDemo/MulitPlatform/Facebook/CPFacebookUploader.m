@@ -136,7 +136,7 @@
     
     // 删除视频
     if (self.uploadInfoRecord.video_id.length > 0) {
-        [self deleteVideoWithVideo_id:self.uploadInfoRecord.video_id completion:nil];
+        [[self class] deleteVideoWithVideo_id:self.uploadInfoRecord.video_id completion:nil];
     }
     
     // 移除
@@ -383,7 +383,7 @@
     
     __weak typeof(self) _self = self;
     [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        NSDictionary *dict = [_self callbackWithResult:result error:error completion:^(NSError *callbackError) {
+        NSDictionary *dict = [[self class] callbackWithResult:result error:error completion:^(NSError *callbackError) {
             completion ? completion(nil, nil, 0, 0, callbackError) : nil;
         }];
         if (!dict) {
@@ -448,9 +448,8 @@
     
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:CPFBCreateVideoUploadURL(send_id) parameters:dict HTTPMethod:k_POST];
     
-    __weak typeof(self) _self = self;
      FBSDKGraphRequestConnection *connection = [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        NSDictionary *dict = [_self callbackWithResult:result error:error completion:^(NSError *callbackError) {
+        NSDictionary *dict = [[self class] callbackWithResult:result error:error completion:^(NSError *callbackError) {
             completion ? completion(0, 0, callbackError) : nil;
         }];
         if (!dict) {
@@ -506,7 +505,7 @@
     
     __weak typeof(self) _self = self;
     [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        NSDictionary *userDict = [_self callbackWithResult:result error:error completion:^(NSError *callbackError) {
+        NSDictionary *userDict = [[self class] callbackWithResult:result error:error completion:^(NSError *callbackError) {
             completion ? completion(nil, callbackError) : nil;
         }];
         if (!userDict) {
@@ -526,7 +525,7 @@
 }
 
 // 删除视频 --- 取消上传的时候
-- (void)deleteVideoWithVideo_id:(NSString *)video_id completion:(void(^)(BOOL success, NSError *error))completion {
++ (void)deleteVideoWithVideo_id:(NSString *)video_id completion:(void(^)(BOOL success, NSError *error))completion {
     if (video_id.length <= 0) {
         NSAssert(NO, @"video id can not be nil");
         completion ? completion(NO, [NSError errorWithDomain:CPFacebookErrorDomain code:kFacebookErrorCode userInfo:@{NSLocalizedDescriptionKey : @"video id is nil"}]) : nil;
@@ -535,9 +534,8 @@
     
     // 删除
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:[NSString stringWithFormat:@"/%@", video_id] parameters:nil HTTPMethod:k_DELETE];
-    __weak typeof(self) _self = self;
     [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-        NSDictionary *userDict = [_self callbackWithResult:result error:error completion:^(NSError *callbackError) {
+        NSDictionary *userDict = [[self class] callbackWithResult:result error:error completion:^(NSError *callbackError) {
             completion ? completion(NO, error) : nil;
         }];
         if (!userDict) {
@@ -575,7 +573,7 @@
 
 #pragma mark - private method
 
-- (NSDictionary *)callbackWithResult:(id)result error:(NSError *)error completion:(void(^)(NSError *callbackError))completion {
++ (NSDictionary *)callbackWithResult:(id)result error:(NSError *)error completion:(void(^)(NSError *callbackError))completion {
     if (error) {
         completion ? completion(error) : nil;
         return nil;

@@ -234,6 +234,10 @@ static NSString *const TwitterAccountIconURL = @"TwitterAccountIconURL";
  完成回调中的userDictionary 会记录视频上传完成后的URL @"videoLink"
  */
 
+/*
+ 创建上传任务时，都得保证视频源的正确 --- 不会去检测视频时候有改动
+ */
+
 /**
  创建一个上传任务
  Facebook 会返回一个 [CPFacebookUploader class]

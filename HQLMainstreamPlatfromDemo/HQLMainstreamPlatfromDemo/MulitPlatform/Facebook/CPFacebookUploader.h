@@ -49,4 +49,6 @@ static NSString *const CPFacebookErrorDomain = @"CPTwitterMediaErrorDomain";
                          uploadProgressHandler:(CPUploaderProgressHandler)uploadProgressHandler
                          completeHandler:(CPUploaderCompleteHandler)completeHandler;
 
++ (void)deleteVideoWithVideo_id:(NSString *)video_id completion:(void(^)(BOOL success, NSError *error))completion;
+
 @end
