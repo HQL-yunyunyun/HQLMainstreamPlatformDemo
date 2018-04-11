@@ -101,11 +101,20 @@
         return;
     }
     
+    // 如果某个权限被拒绝了 也返回错误
+    NSError *decliendError = nil;
     NSMutableArray *array = [NSMutableArray arrayWithArray:decliendPermission];
     if (result.declinedPermissions.count > 0) {
         [array addObjectsFromArray:[result.declinedPermissions allObjects]];
     }
-    handler ? handler(result.token, [result.grantedPermissions allObjects], array, nil) : nil;
+    if (array.count > 0) {
+        decliendError = [NSError errorWithDomain:CPFacebookErrorDomain code:-10000 userInfo:@{
+                                                                                              NSLocalizedDescriptionKey : @"Facebook auth has been refuse some permission",
+                                                                                              @"DecliendPermissions" : array,
+                                                                                              }];
+    }
+    
+    handler ? handler(result.token, [result.grantedPermissions allObjects], array, decliendError) : nil;
 }
 
 /**
