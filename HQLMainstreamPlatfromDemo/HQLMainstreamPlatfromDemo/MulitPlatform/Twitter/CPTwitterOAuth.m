@@ -25,7 +25,7 @@
 
 - (instancetype)initWithAuthorization:(TWTRSession *)authorization {
     if (self = [super init]) {
-        self.authorization = authorization;
+        [self setCurrentAuthorization:authorization];
         if (authorization) {
             self.apiClient = [[TWTRAPIClient alloc] initWithUserID:authorization.userID];
         }

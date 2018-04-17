@@ -104,7 +104,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
 
 - (instancetype)initWithAuthorization:(TwitchAppFetcherAuthorization *)authorization {
     if (self = [super init]) {
-        self.authorization = authorization;
+        [self setCurrentAuthorization:authorization];
     }
     return self;
 }

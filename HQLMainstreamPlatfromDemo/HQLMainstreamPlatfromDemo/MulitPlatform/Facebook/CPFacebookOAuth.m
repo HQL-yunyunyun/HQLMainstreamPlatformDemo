@@ -987,8 +987,13 @@ paging =     {
 
 #pragma mark - permissions
 
+// 检测权限
 - (NSArray <NSString *>*)checkPermissionWithWantPermissions:(NSArray <NSString *>*)wantPermissions {
-    FBSDKAccessToken *token = [FBSDKAccessToken currentAccessToken];
+    return [[self class] checkPermissionWithToken:[FBSDKAccessToken currentAccessToken] wantPermissions:wantPermissions];
+}
+
+// 检测权限
++ (NSArray<NSString *> *)checkPermissionWithToken:(FBSDKAccessToken *)token wantPermissions:(NSArray<NSString *> *)wantPermissions {
     NSMutableArray *needAuthArray = [NSMutableArray array];
     for (NSString *permission in wantPermissions) {
         if (![token.permissions containsObject:permission]) {

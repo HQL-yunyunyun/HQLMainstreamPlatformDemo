@@ -64,7 +64,7 @@ static NSString *const kRedirectURI = @"com.googleusercontent.apps.117770256090-
 
 - (instancetype)initWithAuthorization:(GTMAppAuthFetcherAuthorization *)authorization {
     if (self = [super init]) {
-        _authorization = authorization;
+        [self setGtmAuthorization:authorization];
         self.stoped = NO;
         self.room = nil;
     }

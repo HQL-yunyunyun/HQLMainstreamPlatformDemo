@@ -124,6 +124,15 @@ typedef NS_ENUM(NSInteger, FacebookSearchType) {
 - (NSArray <NSString *>*)checkPermissionWithWantPermissions:(NSArray <NSString *>*)wantPermissions;
 
 /**
+ 检测是否有权限
+
+ @param token 被检测的token
+ @param wantPermissions 被检测的权限
+ @return 没有授权的权限
+ */
++ (NSArray <NSString *>*)checkPermissionWithToken:(FBSDKAccessToken *)token wantPermissions:(NSArray <NSString *>*)wantPermissions;
+
+/**
  调用logout --- 不会主动去接触权限
  */
 - (void)cleanAppAuth;

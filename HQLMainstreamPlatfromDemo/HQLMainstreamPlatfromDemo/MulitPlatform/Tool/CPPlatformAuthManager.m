@@ -71,6 +71,11 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
     return self;
 }
 
+- (void)dealloc {
+    [self removeNotification];
+    PLog(@"dealloc ---> %@", NSStringFromClass([self class]));
+}
+
 #pragma mark - prepare
 
 - (void)loadState {
