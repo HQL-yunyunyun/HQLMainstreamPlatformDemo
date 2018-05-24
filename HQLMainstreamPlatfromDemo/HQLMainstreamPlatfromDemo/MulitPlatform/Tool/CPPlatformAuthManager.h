@@ -116,6 +116,19 @@ static NSString *const TwitterAccountIconURL = @"TwitterAccountIconURL";
 
 #pragma mark - fetch auth
 
+/*
+ Facebook 授权取消:
+ [error.localizedDescription isEqualToString:@"fecth facebook authorization request did cancel"]
+ 
+ YouTube 授权取消:
+ error.code == -4
+ 
+ Twitch 授权取消:
+ [error.localizedDescription isEqualToString:@"fecth twitch authorization request did cancel"]
+ 
+ Twitter 授权取消:
+ error.code = 1;
+ */
 
 /**
  授权

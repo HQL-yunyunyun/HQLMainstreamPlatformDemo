@@ -254,15 +254,19 @@
     if (profile) {
         handler ? handler(profile, nil) : nil;
     } else {
-        [FBSDKProfile loadCurrentProfileWithCompletion:^(FBSDKProfile *profile, NSError *error) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            if (!profile) {
-                handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fetch user info error", NSLocalizedDescriptionKey : @"fetch user info error"}]) : nil;
-                return;
-            }
-            handler ? handler(profile, nil) : nil;
+            [FBSDKProfile loadCurrentProfileWithCompletion:^(FBSDKProfile *profile, NSError *error) {
+                
+                if (!profile) {
+                    handler ? handler(nil, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fetch user info error", NSLocalizedDescriptionKey : @"fetch user info error"}]) : nil;
+                    return;
+                }
+                handler ? handler(profile, nil) : nil;
+                
+            }];
             
-        }];
+        });
     }//*/
     
     /* // 获取个人信息

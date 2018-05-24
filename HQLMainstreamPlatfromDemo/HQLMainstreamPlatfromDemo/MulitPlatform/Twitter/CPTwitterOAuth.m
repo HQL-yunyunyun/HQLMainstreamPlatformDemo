@@ -55,8 +55,8 @@
             handler ? handler(nil, error) : nil;
             return;
         }
-        [strongSelf setCurrentAuthorization:session];
         strongSelf.apiClient = [[TWTRAPIClient alloc] initWithUserID:session.userID];
+        [strongSelf setCurrentAuthorization:session];
         handler ? handler(session, nil) : nil;
     }];
 }
@@ -164,7 +164,7 @@
     }
     
     // 检测
-    if (![[self class] videoCanUploadWithVideoURL:[NSURL URLWithString:url]]) {
+    if (![[self class] videoCanUploadWithVideoURL:[NSURL fileURLWithPath:url]]) {
         NSAssert(NO, @"视频不符合规格");
         completeHandler ? completeHandler(nil, [NSError errorWithDomain:CPTwitterMediaErrorDomain code:-10000 userInfo:@{NSLocalizedDescriptionKey : @"视频不符合规格"}]) : nil;
         return nil;

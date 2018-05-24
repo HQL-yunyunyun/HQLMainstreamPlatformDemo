@@ -52,6 +52,10 @@
     } else { // 登录
         self.isRequesting = YES;
         __weak typeof(self) _self = self;
+        [self.manager doAppAuthPlatformType:CPPlatformAuthType_Facebook presentController:self otherParam:@{@"permissions" : [CPFacebookOAuth publishActionsPermissions]} thenHandler:^(CPPlatformAuthManager *manager, NSError *error) {
+            NSLog(@"error : %@", error);
+        }];
+        /*
         [self.manager fetchUserInfoWithPlatformType:CPPlatformAuthType_Facebook presentController:self completeHandler:^(NSDictionary *info, NSError *error) {
             _self.isRequesting = NO;
             if (error) {
@@ -62,7 +66,7 @@
             _self.facebookUserDict = info;
             PLog(@"facebook user id %@", info[@"user_id"]);
             PLog(@"icon image url : %@", info[@"user_icon"]);
-        }];
+        }];//*/
         
     }
     

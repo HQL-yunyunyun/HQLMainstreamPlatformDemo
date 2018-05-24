@@ -249,6 +249,7 @@ NSString *const kTWITCHAppAuthKeychainItemName = @"hql.twitch.example:Twitch.App
                      [[CustomUserDefault standardUserDefaults] synchronize];
                      //*/
                 }
+                handler ? handler(info, error) : nil;
             }];
             break;
         }
