@@ -97,7 +97,7 @@
     }
     
     if (result.isCancelled) {
-        handler ? handler(result.token, nil, originPermissionArray, [NSError errorWithDomain:FacebookAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
+        handler ? handler(result.token, nil, originPermissionArray, [NSError errorWithDomain:FacebookAuthErrorDoMain code:kFacebookAuthCancelCode userInfo:@{@"message" : @"fecth facebook authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth facebook authorization request did cancel"}]) : nil;
         return;
     }
     

@@ -10,6 +10,8 @@
 #import <TwitterKit/TWTRKit.h>
 #import "CPTwitterUploader.h"
 
+#define kTwitterLoginCancelCode (-1024)
+
 static NSString * const TwitterAuthorizationDidChangeNotificationAuthorizationKey = @"cp.TwitterAuthorizationDidChangeNotificationAuthorizationKey";
 static NSString * const TwitterAuthorizationDidChangeNotification = @"cp.TwitterAuthorizationDidChangeNotification";
 

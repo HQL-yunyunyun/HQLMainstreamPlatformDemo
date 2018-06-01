@@ -126,6 +126,13 @@ static NSString *const kRedirectURI = @"com.googleusercontent.apps.117770256090-
                 [self logMessage:@"Authorization error: %@", [error localizedDescription]];
             }
             
+            if (error.code == -3) {
+                // 取消
+                error = [NSError errorWithDomain:YouTubeErrorDomain code:kYouTubeLoginCancelErrorCode userInfo:@{
+                                                                                                                 NSLocalizedDescriptionKey : @"User cancel",
+                                                                                                                 }];
+            }
+            
             handler ? handler(authorization, error) : nil;
             
         }];

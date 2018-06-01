@@ -34,6 +34,8 @@ typedef void(^CPFacebookAuthCompletion)(FBSDKAccessToken *token, NSArray <NSStri
 #define kFacebookMaximumLimitResult 25
 #define kFacebookMaximumLimitComments 100
 
+#define kFacebookAuthCancelCode (-1024)
+
 // 直播类型 ---
 typedef NS_ENUM(NSInteger, FacebookBoradcastType) {
     FacebookBroadcastType_PUBLISH = 0, // 公开 --- 默认在时间线上

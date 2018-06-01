@@ -52,6 +52,11 @@
         __strong typeof(_self) strongSelf = _self;
         if (error || !session) {
             // 对于session不用做太多的操作，因为TwitterSDK会自己持有每一个session
+            if (error.code == 1) { // 取消
+                error = [NSError errorWithDomain:CPTwitterMediaErrorDomain code:kTwitterLoginCancelCode userInfo:@{
+                                                                                                                   NSLocalizedDescriptionKey : @"User cancelled login flow."
+                                                                                                                   }];
+            }
             handler ? handler(nil, error) : nil;
             return;
         }

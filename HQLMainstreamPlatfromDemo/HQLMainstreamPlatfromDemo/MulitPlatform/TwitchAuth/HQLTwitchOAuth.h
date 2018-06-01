@@ -19,6 +19,8 @@ static NSString *const TwitchAuthErrorDoMain = @"GoCreate.twitch.broadcastAuthor
 static NSString *const TwitchAuthorizationDidChangeNotification = @"hql.TwitchAuthorizationDidChangeNotification";
 static NSString *const TwitchAuthorizationDidChangeNotificationAuthorizationKey = @"hql.TwitchAuthorizationDidChangeNotificationAuthorizationKey";
 
+#define kTwitchLoginCancelErrorCode (-1024)
+
 @protocol HQLTwitchOAuthDelegate <NSObject>
 
 @optional

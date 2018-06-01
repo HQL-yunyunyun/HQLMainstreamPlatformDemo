@@ -17,6 +17,8 @@ static NSString *const YouTubeErrorDomain = @"cp.YouTubeErrorDomain";
 static NSString *const YouTubeAuthorizationDidChangeNotification = @"cp.YouTubeAuthorizationDidChangeNotification";
 static NSString *const YouTubeAuthorizationDidChangeNotificationAuthorizationKey = @"cp.YouTubeAuthorizationDidChangeNotificationAuthorizationKey";
 
+#define kYouTubeLoginCancelErrorCode (-1024)
+
 @interface CPYouTubeOAuth : NSObject
 
 @property (atomic, strong, readonly) GTMAppAuthFetcherAuthorization *authorization;

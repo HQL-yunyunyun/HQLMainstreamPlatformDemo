@@ -877,7 +877,7 @@ typedef NS_ENUM(NSInteger, TwitchChatSocketTag) {
         HQLAuthWebViewController *authWebController = [[HQLAuthWebViewController alloc] initWithURL:url callbackURL:twitchRedirectUri completeHandler:^(NSURL *callbackURL, NSError *error) {
             if (error) {
                 if (error.code == -1) {
-                    error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:-10000 userInfo:@{@"message" : @"fecth twitch authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth twitch authorization request did cancel"}];
+                    error = [NSError errorWithDomain:TwitchAuthErrorDoMain code:kTwitchLoginCancelErrorCode userInfo:@{@"message" : @"fecth twitch authorization request did cancel" , NSLocalizedDescriptionKey : @"fecth twitch authorization request did cancel"}];
                 }
                 handler ? handler(nil, error) : nil;
                 return;
